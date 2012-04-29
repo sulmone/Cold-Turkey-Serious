@@ -1,0 +1,12 @@
+C:\Users\felix\Desktop\Cold-Turkey-Serious\CT_popup\CT_popup\bin\Release\CT_popup.exe.config
+C:\Users\felix\Desktop\Cold-Turkey-Serious\CT_popup\CT_popup\bin\Release\CT_popup.exe
+C:\Users\felix\Desktop\Cold-Turkey-Serious\CT_popup\CT_popup\bin\Release\CT_popup.pdb
+C:\Users\felix\Desktop\Cold-Turkey-Serious\CT_popup\CT_popup\bin\Release\CT_popup.xml
+C:\Users\felix\Desktop\Cold-Turkey-Serious\CT_popup\CT_popup\obj\x86\Release\ResolveAssemblyReference.cache
+C:\Users\felix\Desktop\Cold-Turkey-Serious\CT_popup\CT_popup\obj\x86\Release\ct_popup.Form1.resources
+C:\Users\felix\Desktop\Cold-Turkey-Serious\CT_popup\CT_popup\obj\x86\Release\ct_popup.Resources.resources
+C:\Users\felix\Desktop\Cold-Turkey-Serious\CT_popup\CT_popup\obj\x86\Release\GenerateResource-ResGen.read.1.tlog
+C:\Users\felix\Desktop\Cold-Turkey-Serious\CT_popup\CT_popup\obj\x86\Release\GenerateResource-ResGen.write.1.tlog
+C:\Users\felix\Desktop\Cold-Turkey-Serious\CT_popup\CT_popup\obj\x86\Release\CT_popup.exe
+C:\Users\felix\Desktop\Cold-Turkey-Serious\CT_popup\CT_popup\obj\x86\Release\CT_popup.xml
+C:\Users\felix\Desktop\Cold-Turkey-Serious\CT_popup\CT_popup\obj\x86\Release\CT_popup.pdb

@@ -1,0 +1,8 @@
+\\VBOXSVR\usb\Cold-Turkey\msguser\CT_notify\bin\Debug\ct_notify.exe.config
+\\VBOXSVR\usb\Cold-Turkey\msguser\CT_notify\obj\x86\Debug\ct_notify.exe
+\\VBOXSVR\usb\Cold-Turkey\msguser\CT_notify\obj\x86\Debug\ct_notify.xml
+\\VBOXSVR\usb\Cold-Turkey\msguser\CT_notify\obj\x86\Debug\ct_notify.pdb
+C:\Users\felix\Desktop\Cold-Turkey\CT_notify\CT_notify\bin\Debug\ct_notify.exe.config
+C:\Users\felix\Desktop\Cold-Turkey\CT_notify\CT_notify\obj\x86\Debug\ct_notify.exe
+C:\Users\felix\Desktop\Cold-Turkey\CT_notify\CT_notify\obj\x86\Debug\ct_notify.xml
+C:\Users\felix\Desktop\Cold-Turkey\CT_notify\CT_notify\obj\x86\Debug\ct_notify.pdb

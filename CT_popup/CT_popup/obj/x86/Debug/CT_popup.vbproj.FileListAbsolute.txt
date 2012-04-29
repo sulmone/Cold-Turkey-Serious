@@ -1,0 +1,17 @@
+\\VBOXSVR\usb\Cold-Turkey\CT Popup\CT Popup\bin\Debug\CT_popup.exe.config
+\\VBOXSVR\usb\Cold-Turkey\CT Popup\CT_popup\bin\Debug\CT_popup.exe.config
+C:\Users\felix\Desktop\Cold-Turkey\CT_popup\CT_popup\bin\Debug\CT_popup.exe.config
+C:\Users\felix\Desktop\Cold-Turkey-Serious\CT_popup\CT_popup\bin\Debug\CT_popup.exe.config
+C:\Users\felix\Desktop\Cold-Turkey-Serious\CT_popup\CT_popup\bin\Debug\CT_popup.exe
+C:\Users\felix\Desktop\Cold-Turkey-Serious\CT_popup\CT_popup\bin\Debug\CT_popup.pdb
+C:\Users\felix\Desktop\Cold-Turkey-Serious\CT_popup\CT_popup\bin\Debug\CT_popup.xml
+C:\Users\felix\Desktop\Cold-Turkey-Serious\CT_popup\CT_popup\obj\x86\Debug\ResolveAssemblyReference.cache
+C:\Users\felix\Desktop\Cold-Turkey-Serious\CT_popup\CT_popup\obj\x86\Debug\ct_popup.Form1.resources
+C:\Users\felix\Desktop\Cold-Turkey-Serious\CT_popup\CT_popup\obj\x86\Debug\ct_popup.Resources.resources
+C:\Users\felix\Desktop\Cold-Turkey-Serious\CT_popup\CT_popup\obj\x86\Debug\GenerateResource-ResGen.read.1.tlog
+C:\Users\felix\Desktop\Cold-Turkey-Serious\CT_popup\CT_popup\obj\x86\Debug\GenerateResource.read.1.tlog
+C:\Users\felix\Desktop\Cold-Turkey-Serious\CT_popup\CT_popup\obj\x86\Debug\GenerateResource-ResGen.write.1.tlog
+C:\Users\felix\Desktop\Cold-Turkey-Serious\CT_popup\CT_popup\obj\x86\Debug\GenerateResource.write.1.tlog
+C:\Users\felix\Desktop\Cold-Turkey-Serious\CT_popup\CT_popup\obj\x86\Debug\CT_popup.exe
+C:\Users\felix\Desktop\Cold-Turkey-Serious\CT_popup\CT_popup\obj\x86\Debug\CT_popup.xml
+C:\Users\felix\Desktop\Cold-Turkey-Serious\CT_popup\CT_popup\obj\x86\Debug\CT_popup.pdb

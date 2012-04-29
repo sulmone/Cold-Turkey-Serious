@@ -1,0 +1,55 @@
+C:\Users\Owner\desktop\documents\visual studio 2010\Projects\AntiSocial\AntiSocial\bin\Debug\ColdTurkey.exe.config
+C:\Users\Owner\desktop\documents\visual studio 2010\Projects\AntiSocial\AntiSocial\bin\Debug\ColdTurkey.exe
+C:\Users\Owner\desktop\documents\visual studio 2010\Projects\AntiSocial\AntiSocial\bin\Debug\ColdTurkey.pdb
+C:\Users\Owner\desktop\documents\visual studio 2010\Projects\AntiSocial\AntiSocial\bin\Debug\ColdTurkey.xml
+C:\Users\Owner\desktop\documents\visual studio 2010\Projects\AntiSocial\AntiSocial\obj\x86\Debug\ResolveAssemblyReference.cache
+C:\Users\Owner\desktop\documents\visual studio 2010\Projects\AntiSocial\AntiSocial\obj\x86\Debug\ColdTurkey.Form2.resources
+C:\Users\Owner\desktop\documents\visual studio 2010\Projects\AntiSocial\AntiSocial\obj\x86\Debug\ColdTurkey.Resources.resources
+C:\Users\Owner\desktop\documents\visual studio 2010\Projects\AntiSocial\AntiSocial\obj\x86\Debug\GenerateResource-ResGen.read.1.tlog
+C:\Users\Owner\desktop\documents\visual studio 2010\Projects\AntiSocial\AntiSocial\obj\x86\Debug\GenerateResource.read.1.tlog
+C:\Users\Owner\desktop\documents\visual studio 2010\Projects\AntiSocial\AntiSocial\obj\x86\Debug\GenerateResource-ResGen.write.1.tlog
+C:\Users\Owner\desktop\documents\visual studio 2010\Projects\AntiSocial\AntiSocial\obj\x86\Debug\GenerateResource.write.1.tlog
+C:\Users\Owner\desktop\documents\visual studio 2010\Projects\AntiSocial\AntiSocial\obj\x86\Debug\ColdTurkey.exe
+C:\Users\Owner\desktop\documents\visual studio 2010\Projects\AntiSocial\AntiSocial\obj\x86\Debug\ColdTurkey.xml
+C:\Users\Owner\desktop\documents\visual studio 2010\Projects\AntiSocial\AntiSocial\obj\x86\Debug\ColdTurkey.pdb
+C:\Users\Owner\Desktop\Documents\Visual Studio 2010\Projects\AntiSocial\AntiSocial\obj\x86\Debug\ColdTurkey.coldturkey.resources
+C:\Users\Owner\Desktop\Documents\Visual Studio 2010\Projects\AntiSocial\AntiSocial\obj\x86\Debug\ColdTurkey.Add_custom.resources
+C:\Users\Owner\Desktop\Documents\Visual Studio 2010\Projects\AntiSocial\AntiSocial\obj\x86\Debug\ColdTurkey.lastchance.resources
+C:\Users\felix\Desktop\ColdTurkey\bin\Debug\ColdTurkey.exe.config
+C:\Users\felix\Desktop\ColdTurkey\obj\x86\Debug\ColdTurkey.exe
+C:\Users\felix\Desktop\ColdTurkey\obj\x86\Debug\ColdTurkey.xml
+C:\Users\felix\Desktop\ColdTurkey\obj\x86\Debug\ColdTurkey.pdb
+C:\Users\felix\Desktop\Cold-Turkey\ColdTurkey\bin\Debug\ColdTurkey.exe.config
+C:\Users\felix\Desktop\Cold-Turkey\ColdTurkey\obj\x86\Debug\ColdTurkey.exe
+C:\Users\felix\Desktop\Cold-Turkey\ColdTurkey\obj\x86\Debug\ColdTurkey.xml
+C:\Users\felix\Desktop\Cold-Turkey\ColdTurkey\obj\x86\Debug\ColdTurkey.pdb
+C:\Users\felix\Desktop\Cold-Turkey\ColdTurkey\obj\x86\Debug\ResolveAssemblyReference.cache
+C:\Users\felix\Desktop\Cold-Turkey\ColdTurkey\obj\x86\Debug\ColdTurkey.Add_custom.resources
+C:\Users\felix\Desktop\Cold-Turkey\ColdTurkey\obj\x86\Debug\ColdTurkey.coldturkey.resources
+C:\Users\felix\Desktop\Cold-Turkey\ColdTurkey\obj\x86\Debug\ColdTurkey.Resources.resources
+C:\Users\felix\Desktop\Cold-Turkey\ColdTurkey\obj\x86\Debug\GenerateResource-ResGen.read.1.tlog
+C:\Users\felix\Desktop\Cold-Turkey\ColdTurkey\obj\x86\Debug\GenerateResource.read.1.tlog
+C:\Users\felix\Desktop\Cold-Turkey\ColdTurkey\obj\x86\Debug\GenerateResource-ResGen.write.1.tlog
+C:\Users\felix\Desktop\Cold-Turkey\ColdTurkey\obj\x86\Debug\GenerateResource.write.1.tlog
+C:\Users\felix\Desktop\Cold-Turkey\ColdTurkey\bin\Debug\ColdTurkey.exe
+C:\Users\felix\Desktop\Cold-Turkey\ColdTurkey\bin\Debug\ColdTurkey.pdb
+C:\Users\felix\Desktop\Cold-Turkey\ColdTurkey\bin\Debug\ColdTurkey.xml
+C:\Users\felix\Desktop\Cold-Turkey\ColdTurkey\obj\x86\Debug\ColdTurkey.UpdateFacebookForm.resources
+C:\Users\felix\Desktop\Cold-Turkey\ColdTurkey\obj\x86\Debug\ColdTurkey.listShowWarning.resources
+C:\Users\felix\Desktop\Cold-Turkey-Serious\ColdTurkey\bin\Debug\ColdTurkey.exe.config
+C:\Users\felix\Desktop\Cold-Turkey-Serious\ColdTurkey\bin\Debug\ColdTurkey.exe
+C:\Users\felix\Desktop\Cold-Turkey-Serious\ColdTurkey\bin\Debug\ColdTurkey.pdb
+C:\Users\felix\Desktop\Cold-Turkey-Serious\ColdTurkey\bin\Debug\ColdTurkey.xml
+C:\Users\felix\Desktop\Cold-Turkey-Serious\ColdTurkey\obj\x86\Debug\ResolveAssemblyReference.cache
+C:\Users\felix\Desktop\Cold-Turkey-Serious\ColdTurkey\obj\x86\Debug\ColdTurkey.Add_custom.resources
+C:\Users\felix\Desktop\Cold-Turkey-Serious\ColdTurkey\obj\x86\Debug\ColdTurkey.ColdTurkey.resources
+C:\Users\felix\Desktop\Cold-Turkey-Serious\ColdTurkey\obj\x86\Debug\ColdTurkey.UpdateFacebookForm.resources
+C:\Users\felix\Desktop\Cold-Turkey-Serious\ColdTurkey\obj\x86\Debug\ColdTurkey.listShowWarning.resources
+C:\Users\felix\Desktop\Cold-Turkey-Serious\ColdTurkey\obj\x86\Debug\ColdTurkey.Resources.resources
+C:\Users\felix\Desktop\Cold-Turkey-Serious\ColdTurkey\obj\x86\Debug\GenerateResource-ResGen.read.1.tlog
+C:\Users\felix\Desktop\Cold-Turkey-Serious\ColdTurkey\obj\x86\Debug\GenerateResource.read.1.tlog
+C:\Users\felix\Desktop\Cold-Turkey-Serious\ColdTurkey\obj\x86\Debug\GenerateResource-ResGen.write.1.tlog
+C:\Users\felix\Desktop\Cold-Turkey-Serious\ColdTurkey\obj\x86\Debug\GenerateResource.write.1.tlog
+C:\Users\felix\Desktop\Cold-Turkey-Serious\ColdTurkey\obj\x86\Debug\ColdTurkey.exe
+C:\Users\felix\Desktop\Cold-Turkey-Serious\ColdTurkey\obj\x86\Debug\ColdTurkey.xml
+C:\Users\felix\Desktop\Cold-Turkey-Serious\ColdTurkey\obj\x86\Debug\ColdTurkey.pdb

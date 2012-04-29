@@ -1,0 +1,12 @@
+C:\Users\Owner\desktop\documents\visual studio 2010\Projects\CT Popup\CT Popup\bin\Release\CT Popup.exe.config
+C:\Users\Owner\desktop\documents\visual studio 2010\Projects\CT Popup\CT Popup\bin\Release\CT Popup.exe
+C:\Users\Owner\desktop\documents\visual studio 2010\Projects\CT Popup\CT Popup\bin\Release\CT Popup.pdb
+C:\Users\Owner\desktop\documents\visual studio 2010\Projects\CT Popup\CT Popup\bin\Release\CT Popup.xml
+C:\Users\Owner\desktop\documents\visual studio 2010\Projects\CT Popup\CT Popup\obj\x86\Release\ResolveAssemblyReference.cache
+C:\Users\Owner\desktop\documents\visual studio 2010\Projects\CT Popup\CT Popup\obj\x86\Release\ct_popup.Form1.resources
+C:\Users\Owner\desktop\documents\visual studio 2010\Projects\CT Popup\CT Popup\obj\x86\Release\ct_popup.Resources.resources
+C:\Users\Owner\desktop\documents\visual studio 2010\Projects\CT Popup\CT Popup\obj\x86\Release\GenerateResource-ResGen.read.1.tlog
+C:\Users\Owner\desktop\documents\visual studio 2010\Projects\CT Popup\CT Popup\obj\x86\Release\GenerateResource-ResGen.write.1.tlog
+C:\Users\Owner\desktop\documents\visual studio 2010\Projects\CT Popup\CT Popup\obj\x86\Release\CT Popup.exe
+C:\Users\Owner\desktop\documents\visual studio 2010\Projects\CT Popup\CT Popup\obj\x86\Release\CT Popup.xml
+C:\Users\Owner\desktop\documents\visual studio 2010\Projects\CT Popup\CT Popup\obj\x86\Release\CT Popup.pdb

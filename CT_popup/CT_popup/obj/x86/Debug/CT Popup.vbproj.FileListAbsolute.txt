@@ -1,0 +1,22 @@
+C:\Users\Owner\desktop\documents\visual studio 2010\Projects\CT Popup\CT Popup\bin\Debug\CT Popup.exe
+C:\Users\Owner\desktop\documents\visual studio 2010\Projects\CT Popup\CT Popup\bin\Debug\CT Popup.pdb
+C:\Users\Owner\desktop\documents\visual studio 2010\Projects\CT Popup\CT Popup\bin\Debug\CT Popup.xml
+C:\Users\Owner\desktop\documents\visual studio 2010\Projects\CT Popup\CT Popup\obj\x86\Debug\ResolveAssemblyReference.cache
+C:\Users\Owner\desktop\documents\visual studio 2010\Projects\CT Popup\CT Popup\obj\x86\Debug\ct_popup.Form1.resources
+C:\Users\Owner\desktop\documents\visual studio 2010\Projects\CT Popup\CT Popup\obj\x86\Debug\ct_popup.Resources.resources
+C:\Users\Owner\desktop\documents\visual studio 2010\Projects\CT Popup\CT Popup\obj\x86\Debug\GenerateResource.read.1.tlog
+C:\Users\Owner\desktop\documents\visual studio 2010\Projects\CT Popup\CT Popup\obj\x86\Debug\GenerateResource.write.1.tlog
+C:\Users\Owner\desktop\documents\visual studio 2010\Projects\CT Popup\CT Popup\obj\x86\Debug\CT Popup.exe
+C:\Users\Owner\desktop\documents\visual studio 2010\Projects\CT Popup\CT Popup\obj\x86\Debug\CT Popup.xml
+C:\Users\Owner\desktop\documents\visual studio 2010\Projects\CT Popup\CT Popup\obj\x86\Debug\CT Popup.pdb
+C:\Users\Owner\desktop\documents\visual studio 2010\Projects\CT Popup\CT Popup\bin\Debug\CT Popup.exe.config
+C:\Users\Owner\desktop\documents\visual studio 2010\Projects\CT Popup\CT Popup\obj\x86\Debug\GenerateResource-ResGen.read.1.tlog
+C:\Users\Owner\desktop\documents\visual studio 2010\Projects\CT Popup\CT Popup\obj\x86\Debug\GenerateResource-ResGen.write.1.tlog
+C:\Users\felix\Documents\Visual Studio 2010\Projects\CT Popup\CT Popup\bin\Debug\CT Popup.exe.config
+C:\Users\felix\Documents\Visual Studio 2010\Projects\CT Popup\CT Popup\obj\x86\Debug\CT Popup.exe
+C:\Users\felix\Documents\Visual Studio 2010\Projects\CT Popup\CT Popup\obj\x86\Debug\CT Popup.xml
+C:\Users\felix\Documents\Visual Studio 2010\Projects\CT Popup\CT Popup\obj\x86\Debug\CT Popup.pdb
+\\VBOXSVR\usb\Cold-Turkey\CT Popup\CT Popup\bin\Debug\CT Popup.exe.config
+\\VBOXSVR\usb\Cold-Turkey\CT Popup\CT Popup\obj\x86\Debug\CT Popup.exe
+\\VBOXSVR\usb\Cold-Turkey\CT Popup\CT Popup\obj\x86\Debug\CT Popup.xml
+\\VBOXSVR\usb\Cold-Turkey\CT Popup\CT Popup\obj\x86\Debug\CT Popup.pdb

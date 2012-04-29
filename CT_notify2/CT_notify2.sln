@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Basic Express 2010
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "CT_notify2", "CT_notify2\CT_notify2.vbproj", "{CCF5BE15-9F16-4A94-8DA6-ECD553CC7EEE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x86 = Debug|x86
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CCF5BE15-9F16-4A94-8DA6-ECD553CC7EEE}.Debug|x86.ActiveCfg = Debug|x86
+		{CCF5BE15-9F16-4A94-8DA6-ECD553CC7EEE}.Debug|x86.Build.0 = Debug|x86
+		{CCF5BE15-9F16-4A94-8DA6-ECD553CC7EEE}.Release|x86.ActiveCfg = Release|x86
+		{CCF5BE15-9F16-4A94-8DA6-ECD553CC7EEE}.Release|x86.Build.0 = Release|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

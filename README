@@ -1,0 +1,12 @@
+Hi everyone,
+
+I have decided to make this project open source in hopes that it will continue to grow and become 
+useful for more people.
+
+/ColdTurkey   <-- Root-level Main application (writes to hosts file)
+/CT_notify    <-- User-level background process to trigger CT_popup when time is up
+/CT_popup     <-- User-level program that is the popup displayed when the time is up
+/kctrp_srv    <-- Root-level Windows service (lock hosts file) and unblocks user when time is up
+
+
+Questions?    felixbelzile@rogers.com

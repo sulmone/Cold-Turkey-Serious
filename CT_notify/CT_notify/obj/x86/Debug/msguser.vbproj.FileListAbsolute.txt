@@ -1,0 +1,22 @@
+C:\Users\Owner\AppData\Local\Temporary Projects\WindowsApplication1\bin\Debug\WindowsApplication1.exe
+C:\Users\Owner\AppData\Local\Temporary Projects\WindowsApplication1\bin\Debug\WindowsApplication1.pdb
+C:\Users\Owner\AppData\Local\Temporary Projects\WindowsApplication1\bin\Debug\WindowsApplication1.xml
+C:\Users\Owner\AppData\Local\Temporary Projects\WindowsApplication1\obj\x86\Debug\ResolveAssemblyReference.cache
+C:\Users\Owner\AppData\Local\Temporary Projects\WindowsApplication1\obj\x86\Debug\WindowsApplication1.Form1.resources
+C:\Users\Owner\AppData\Local\Temporary Projects\WindowsApplication1\obj\x86\Debug\WindowsApplication1.Resources.resources
+C:\Users\Owner\AppData\Local\Temporary Projects\WindowsApplication1\obj\x86\Debug\GenerateResource.read.1.tlog
+C:\Users\Owner\AppData\Local\Temporary Projects\WindowsApplication1\obj\x86\Debug\GenerateResource.write.1.tlog
+C:\Users\Owner\AppData\Local\Temporary Projects\WindowsApplication1\obj\x86\Debug\WindowsApplication1.exe
+C:\Users\Owner\AppData\Local\Temporary Projects\WindowsApplication1\obj\x86\Debug\WindowsApplication1.xml
+C:\Users\Owner\AppData\Local\Temporary Projects\WindowsApplication1\obj\x86\Debug\WindowsApplication1.pdb
+C:\Users\Owner\desktop\documents\visual studio 2010\Projects\msguser\msguser\bin\Debug\msguser.exe
+C:\Users\Owner\desktop\documents\visual studio 2010\Projects\msguser\msguser\bin\Debug\msguser.pdb
+C:\Users\Owner\desktop\documents\visual studio 2010\Projects\msguser\msguser\bin\Debug\msguser.xml
+C:\Users\Owner\desktop\documents\visual studio 2010\Projects\msguser\msguser\obj\x86\Debug\ResolveAssemblyReference.cache
+C:\Users\Owner\desktop\documents\visual studio 2010\Projects\msguser\msguser\obj\x86\Debug\WindowsApplication1.Form1.resources
+C:\Users\Owner\desktop\documents\visual studio 2010\Projects\msguser\msguser\obj\x86\Debug\WindowsApplication1.Resources.resources
+C:\Users\Owner\desktop\documents\visual studio 2010\Projects\msguser\msguser\obj\x86\Debug\GenerateResource.read.1.tlog
+C:\Users\Owner\desktop\documents\visual studio 2010\Projects\msguser\msguser\obj\x86\Debug\GenerateResource.write.1.tlog
+C:\Users\Owner\desktop\documents\visual studio 2010\Projects\msguser\msguser\obj\x86\Debug\msguser.exe
+C:\Users\Owner\desktop\documents\visual studio 2010\Projects\msguser\msguser\obj\x86\Debug\msguser.xml
+C:\Users\Owner\desktop\documents\visual studio 2010\Projects\msguser\msguser\obj\x86\Debug\msguser.pdb
