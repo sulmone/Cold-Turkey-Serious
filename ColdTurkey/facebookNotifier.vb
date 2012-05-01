@@ -17,25 +17,16 @@
 '    You should have received a copy of the GNU General Public License
 '    along with Cold Turkey.  If not, see <http://www.gnu.org/licenses/>.
 
-Public Class Form1
+Public Class UpdateFacebookForm
 
-    Private Sub Button1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button1.Click
-        End
+    Private Sub Form2_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Me.Visible = False
     End Sub
 
-    Private Sub Button2_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button2.Click
 
-        Try
-            Process.Start(Application.StartupPath & "\ColdTurkey.exe")
-            End
-        Catch ex As Exception
-            MsgBox("Could not locate ColdTurkey's main executable.")
-            MsgBox(ex.Message)
-        End Try
-        End
-    End Sub
-
-    Private Sub Form1_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-
+    Private Sub WebBrowser1_DocumentTitleChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles WebBrowser1.DocumentTitleChanged
+        If WebBrowser1.DocumentTitle = "Done" Then
+            Me.Dispose()
+        End If
     End Sub
 End Class

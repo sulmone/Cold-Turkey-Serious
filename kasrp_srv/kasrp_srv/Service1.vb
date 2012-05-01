@@ -1,3 +1,22 @@
+'    Copyright (c) 2011, 2012 Felix Belzile
+'    Official software website: http://getcoldturkey.com
+'    Contact: felixbelzile@rogers.com  Web: http://felixbelzile.com
+
+'    This file is part of Cold Turkey
+'
+'    Cold Turkey is free software: you can redistribute it and/or modify
+'    it under the terms of the GNU General Public License as published by
+'    the Free Software Foundation, either version 3 of the License, or
+'    (at your option) any later version.
+'
+'    Cold Turkey is distributed in the hope that it will be useful,
+'    but WITHOUT ANY WARRANTY; without even the implied warranty of
+'    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+'    GNU General Public License for more details.
+'
+'    You should have received a copy of the GNU General Public License
+'    along with Cold Turkey.  If not, see <http://www.gnu.org/licenses/>.
+
 Imports System.ServiceProcess
 Imports System.IO
 Imports System.Security.Cryptography
@@ -17,11 +36,9 @@ Public Class Service1
     Friend WithEvents timer As System.Timers.Timer
     Friend WithEvents adder As System.IO.FileSystemWatcher
     Dim install As String
-    Dim iniFile As IniFile
     Public sWinDir As String = Environ("WinDir")
     Public hostDirS As String = sWinDir + "\system32\drivers\etc\hosts"
-    Dim iniDateUntil As Date
-    Dim iniHourUntil, iniMinuteUntil As Integer
+    Dim iniDateUntil As DateTime
     Dim iniTimeChanging As String
     Public fs As FileStream
     Public sw As StreamWriter
@@ -107,28 +124,37 @@ Public Class Service1
 
     Protected Overrides Sub OnStart(ByVal args() As String)
 
+        Dim timeLeft As Long
+        Dim timeLeftDate As DateTime
         ctMutex = New Threading.Mutex(False, "KeepmealivepleaseKCTRP")
+        adder.Path = sWinDir & "\system32\drivers\etc"
 
-        'AddHandler SystemEvents.PowerModeChanged, AddressOf SystemEvents_PowerModeChanged
-
-        iniFile = New IniFile
         Try
+            Dim iniFile = New IniFile
             iniFile.Load(Application.StartupPath + "\ct_settings.ini")
+            If iniFile.Sections.Count < 2 Then
+                stopMe()
+            Else
+                DateTime.TryParse(encryptionW.DecryptData(iniFile.GetKeyValue("Time", "Until")), timeLeftDate)
+                timeLeft = DateDiff(DateInterval.Second, DateTime.Now, timeLeftDate)
+                If timeLeft <= 0 Then
+                    End
+                End If
+            End If
+
         Catch ex As Exception
+            My.Computer.FileSystem.WriteAllText(Application.StartupPath + "\ct_settings.ini", "", False)
+            Dim iniFile = New IniFile
             iniFile.AddSection("User")
             iniFile.SetKeyValue("User", "CustomChecked", "abcdefghijk")
             iniFile.SetKeyValue("User", "CustomSites", "null")
             iniFile.SetKeyValue("User", "Done", "no")
             iniFile.SetKeyValue("User", "NeedsAlerted", "yes")
             iniFile.AddSection("Time")
-            iniFile.SetKeyValue("Time", "Date", encryptionW.EncryptData(DateAdd("d", 7, CDate(Date.Today))))
-            iniFile.SetKeyValue("Time", "Hour", encryptionW.EncryptData(Date.Today.Hour))
-            iniFile.SetKeyValue("Time", "Minute", encryptionW.EncryptData(Date.Today.Minute))
+            iniFile.SetKeyValue("Time", "Until", encryptionW.EncryptData(DateAdd("d", 7, DateTime.Now)))
             iniFile.SetKeyValue("Time", "TimeChanging", "no")
             iniFile.AddSection("CurrentTime")
-            iniFile.SetKeyValue("CurrentTime", "Date", encryptionW.EncryptData(Date.Today.Date))
-            iniFile.SetKeyValue("CurrentTime", "Hour", encryptionW.EncryptData(Date.Today.Hour))
-            iniFile.SetKeyValue("CurrentTime", "Minute", encryptionW.EncryptData(Date.Today.Minute))
+            iniFile.SetKeyValue("CurrentTime", "Now", encryptionW.EncryptData(DateTime.Now))
             iniFile.AddSection("Process")
             iniFile.SetKeyValue("Process", "List", "null")
             iniFile.Save(Application.StartupPath + "\ct_settings.ini")
@@ -140,12 +166,13 @@ Public Class Service1
             System.IO.File.AppendAllText(hostDirS, "")
             SetAttr(hostDirS, vbNormal)
         End If
-
-        fs = New FileStream(hostDirS, FileMode.Append, FileAccess.Write, FileShare.Read)
-        sw = New StreamWriter(fs)
-        SetAttr(hostDirS, vbReadOnly)
-
-        adder.Path = sWinDir & "\system32\drivers\etc"
+        Try
+            fs = New FileStream(hostDirS, FileMode.Append, FileAccess.Write, FileShare.Read)
+            sw = New StreamWriter(fs)
+            SetAttr(hostDirS, vbReadOnly)
+        Catch ex As Exception
+            stopMe()
+        End Try
 
     End Sub
 
@@ -155,40 +182,34 @@ Public Class Service1
         Dim Proc As System.Diagnostics.Process
         Dim notifyFound As Boolean = False
         Dim iniProcessList As String = ""
+        Dim timeLeft As Long
+        Dim timeLeftDate As DateTime
 
-        Threading.Thread.Sleep(1000)
-
-        iniFile = New IniFile
         Try
+            Dim iniFile = New IniFile
             iniFile.Load(Application.StartupPath + "\ct_settings.ini")
-            iniDateUntil = Date.Parse(encryptionW.DecryptData(iniFile.GetKeyValue("Time", "Date")))
-            iniHourUntil = Integer.Parse(encryptionW.DecryptData(iniFile.GetKeyValue("Time", "Hour")))
-            iniMinuteUntil = Integer.Parse(encryptionW.DecryptData(iniFile.GetKeyValue("Time", "Minute")))
+            DateTime.TryParse(encryptionW.DecryptData(iniFile.GetKeyValue("Time", "Until")), timeLeftDate)
             iniTimeChanging = iniFile.GetKeyValue("Time", "TimeChanging")
             iniProcessList = iniFile.GetKeyValue("Process", "List")
             If StrComp("null", iniProcessList) <> 0 Then
                 iniProcessList = encryptionW.DecryptData(iniProcessList)
             End If
         Catch ex As Exception
+            Dim iniFile = New IniFile
             iniFile.AddSection("User")
             iniFile.SetKeyValue("User", "CustomChecked", "abcdefghijk")
             iniFile.SetKeyValue("User", "CustomSites", "null")
             iniFile.SetKeyValue("User", "Done", "no")
             iniFile.SetKeyValue("User", "NeedsAlerted", "yes")
             iniFile.AddSection("Time")
-            iniFile.SetKeyValue("Time", "Date", encryptionW.EncryptData(DateAdd("d", 7, CDate(Date.Today))))
-            iniFile.SetKeyValue("Time", "Hour", encryptionW.EncryptData(Date.Today.Hour))
-            iniFile.SetKeyValue("Time", "Minute", encryptionW.EncryptData(Date.Today.Minute))
+            iniFile.SetKeyValue("Time", "Until", encryptionW.EncryptData(DateAdd("d", 7, DateTime.Now)))
             iniFile.SetKeyValue("Time", "TimeChanging", "no")
             iniFile.AddSection("CurrentTime")
-            iniFile.SetKeyValue("CurrentTime", "Date", encryptionW.EncryptData(Date.Today.Date))
-            iniFile.SetKeyValue("CurrentTime", "Hour", encryptionW.EncryptData(Date.Today.Hour))
-            iniFile.SetKeyValue("CurrentTime", "Minute", encryptionW.EncryptData(Date.Today.Minute))
+            iniFile.SetKeyValue("CurrentTime", "Now", encryptionW.EncryptData(DateTime.Now))
             iniFile.AddSection("Process")
             iniFile.SetKeyValue("Process", "List", "null")
             iniFile.Save(Application.StartupPath + "\ct_settings.ini")
         End Try
-
 
         processList = System.Diagnostics.Process.GetProcesses()
         For Each Proc In processList
@@ -202,39 +223,15 @@ Public Class Service1
             End If
         Next
 
-
-        Dim secondsStillBlocked As Integer
-        secondsStillBlocked = DateAndTime.DateDiff(DateInterval.Second, DateAndTime.Today.Date, iniDateUntil.Date)
-        If TimeOfDay.Hour < iniHourUntil Then
-            secondsStillBlocked = secondsStillBlocked + ((iniHourUntil - TimeOfDay.Hour) * 60 * 60)
-            If TimeOfDay.Minute < iniMinuteUntil Then
-                secondsStillBlocked = secondsStillBlocked + ((iniMinuteUntil - TimeOfDay.Minute) * 60)
-            ElseIf TimeOfDay.Minute > iniMinuteUntil Then
-                secondsStillBlocked = secondsStillBlocked - ((TimeOfDay.Minute - (iniMinuteUntil)) * 60)
-            End If
-        ElseIf TimeOfDay.Hour = iniHourUntil Then
-            If TimeOfDay.Minute < iniMinuteUntil Then
-                secondsStillBlocked = secondsStillBlocked + ((iniMinuteUntil - TimeOfDay.Minute) * 60)
-            ElseIf TimeOfDay.Minute > iniMinuteUntil Then
-                secondsStillBlocked = secondsStillBlocked - ((TimeOfDay.Minute - iniMinuteUntil) * 60)
-            End If
-        ElseIf TimeOfDay.Hour > iniHourUntil Then
-            secondsStillBlocked = secondsStillBlocked - ((TimeOfDay.Hour - iniHourUntil) * 60 * 60)
-            If TimeOfDay.Minute < iniMinuteUntil Then
-                secondsStillBlocked = secondsStillBlocked + ((iniMinuteUntil - TimeOfDay.Minute) * 60)
-            ElseIf TimeOfDay.Minute > iniMinuteUntil Then
-                secondsStillBlocked = secondsStillBlocked - ((TimeOfDay.Minute - (iniMinuteUntil)) * 60)
-            End If
-        End If
-        secondsStillBlocked = secondsStillBlocked - (TimeOfDay.Second)
+        timeLeft = DateDiff(DateInterval.Second, DateTime.Now, timeLeftDate)
 
         If StrComp("no", iniTimeChanging) = 0 Then
-            If secondsStillBlocked <= 5 Then
+            If timeLeft <= 5 Then
                 stopMe()
             Else
-                iniFile.SetKeyValue("CurrentTime", "Date", encryptionW.EncryptData(DateAndTime.Now))
-                iniFile.SetKeyValue("CurrentTime", "Hour", encryptionW.EncryptData(DateAndTime.Now.Hour))
-                iniFile.SetKeyValue("CurrentTime", "Minute", encryptionW.EncryptData(DateAndTime.Now.Minute))
+                Dim iniFile = New IniFile
+                iniFile.Load(Application.StartupPath + "\ct_settings.ini")
+                iniFile.SetKeyValue("CurrentTime", "Now", encryptionW.EncryptData(DateTime.Now))
                 iniFile.Save(Application.StartupPath + "\ct_settings.ini")
             End If
         End If
@@ -244,7 +241,6 @@ Public Class Service1
 
         Dim fileReader, original As String
         Dim startpos As Integer
-        iniFile = New IniFile
 
         sw.Close()
 
@@ -267,10 +263,13 @@ Public Class Service1
         sw2.Close()
         SetAttr(hostDirS, vbReadOnly)
 
+        Dim iniFile = New IniFile
         iniFile.Load(Application.StartupPath + "\ct_settings.ini")
         iniFile.SetKeyValue("User", "Done", "yes")
         iniFile.Save(Application.StartupPath + "\ct_settings.ini")
+
         Me.Stop()
+        End
 
     End Sub
 

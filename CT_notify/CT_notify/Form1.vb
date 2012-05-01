@@ -1,4 +1,23 @@
-﻿Imports Microsoft.Win32
+﻿'    Copyright (c) 2011, 2012 Felix Belzile
+'    Official software website: http://getcoldturkey.com
+'    Contact: felixbelzile@rogers.com  Web: http://felixbelzile.com
+
+'    This file is part of Cold Turkey
+'
+'    Cold Turkey is free software: you can redistribute it and/or modify
+'    it under the terms of the GNU General Public License as published by
+'    the Free Software Foundation, either version 3 of the License, or
+'    (at your option) any later version.
+'
+'    Cold Turkey is distributed in the hope that it will be useful,
+'    but WITHOUT ANY WARRANTY; without even the implied warranty of
+'    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+'    GNU General Public License for more details.
+'
+'    You should have received a copy of the GNU General Public License
+'    along with Cold Turkey.  If not, see <http://www.gnu.org/licenses/>.
+
+Imports Microsoft.Win32
 Imports System.Security.Cryptography
 Imports System.Diagnostics
 Imports System.IO
@@ -7,41 +26,38 @@ Imports ct_notify.IniFile
 Public Class Form1
 
     Dim done As String
+    Dim needsAlerted As String
     Dim pop As String
     Dim iniProcessList As String = ""
-    Dim iniFile As IniFile
     Dim encryptionW As New Simple3Des("ct_textbox")
-    Dim iniDateOld As Date
-    Dim iniHourOld, iniMinuteOld As Integer
+    Dim iniDateOld As DateTime
 
     Private Sub Form1_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
 
         Me.Hide()
-        iniFile = New IniFile
+
         AddHandler SystemEvents.TimeChanged, AddressOf SystemEvents_TimeChanged
         AddHandler SystemEvents.PowerModeChanged, AddressOf SystemEvents_PowerModeChanged
 
         Try
+            Dim iniFile = New IniFile
             iniFile.Load(Application.StartupPath + "\ct_settings.ini")
-        Catch ex As Exception
-            MsgBox("Error reading mah configuration file. Please re-install me.")
-            End
-        End Try
-
-        Try
             done = iniFile.GetKeyValue("User", "Done")
             iniProcessList = iniFile.GetKeyValue("Process", "List")
             If StrComp(iniProcessList, "null") <> 0 Then
                 iniProcessList = encryptionW.DecryptData(iniProcessList)
             End If
         Catch ex As Exception
+            MsgBox("Error reading mah configuration file. Please re-install me.")
             End
         End Try
 
         If StrComp("yes", done) = 0 Then
-            If StrComp(iniFile.GetKeyValue("User", "NeedsAlerted"), "no") = 0 Then
+            If StrComp(needsAlerted, "no") = 0 Then
                 End
             Else
+                Dim iniFile As New IniFile
+                iniFile.Load(Application.StartupPath + "\ct_settings.ini")
                 iniFile.SetKeyValue("User", "NeedsAlerted", "no")
                 iniFile.Save(Application.StartupPath + "\ct_settings.ini")
                 Process.Start(Application.StartupPath + "\ct_popup.exe")
@@ -53,23 +69,22 @@ Public Class Form1
     End Sub
 
     Private Sub timer_Elapsed(ByVal sender As System.Object, ByVal e As System.Timers.ElapsedEventArgs) Handles timer.Elapsed
-        iniFile = New IniFile
+
         Try
-            iniFile.Load(Application.StartupPath + "\ct_settings.ini")
+            Dim IniFile = New IniFile
+            IniFile.Load(Application.StartupPath + "\ct_settings.ini")
+            done = IniFile.GetKeyValue("User", "Done")
+            needsAlerted = IniFile.GetKeyValue("User", "NeedsAlerted")
         Catch ex As Exception
-            Threading.Thread.Sleep(500)
-            Try
-                iniFile.Load(Application.StartupPath + "\ct_settings.ini")
-            Catch ex2 As Exception
-            End Try
+
         End Try
 
-        done = iniFile.GetKeyValue("User", "Done")
-
         If StrComp("yes", done) = 0 Then
-            If StrComp(iniFile.GetKeyValue("User", "NeedsAlerted"), "no") = 0 Then
+            If StrComp(needsAlerted, "no") = 0 Then
                 End
             Else
+                Dim iniFile = New IniFile
+                iniFile.Load(Application.StartupPath + "\ct_settings.ini")
                 iniFile.SetKeyValue("User", "NeedsAlerted", "no")
                 iniFile.Save(Application.StartupPath + "\ct_settings.ini")
                 Dim killHelper As Process() = Process.GetProcessesByName("ct_notify2")
@@ -84,49 +99,33 @@ Public Class Form1
                 End
             End If
         End If
-
-
-
     End Sub
 
     Private Sub SystemEvents_TimeChanged(ByVal sender As Object, ByVal e As EventArgs)
 
-
-        Dim iniDateNew, iniDateUntil As Date
-        Dim iniYearDiff, iniMonthDiff, iniDayDiff, iniHourDiff, iniMinuteDiff, iniHourNew, iniMinuteNew, iniHourUntil, iniMinuteUntil As Integer
+        Dim iniDateUntil, newDateUntil As DateTime
+        Dim iniSecondsLeft As Long
 
         RemoveHandler SystemEvents.TimeChanged, AddressOf SystemEvents_TimeChanged
         RemoveHandler SystemEvents.PowerModeChanged, AddressOf SystemEvents_PowerModeChanged
 
         timer.Stop()
-        iniFile = New IniFile
+        Dim iniFile = New IniFile
         iniFile.Load(Application.StartupPath + "\ct_settings.ini")
         iniFile.SetKeyValue("Time", "TimeChanging", "yes")
         iniFile.Save(Application.StartupPath + "\ct_settings.ini")
 
-        Threading.Thread.Sleep(8500)
+        Threading.Thread.Sleep(5000)
         iniFile.Load(Application.StartupPath + "\ct_settings.ini")
 
-        iniDateOld = Date.Parse(encryptionW.DecryptData(iniFile.GetKeyValue("CurrentTime", "Date")))
-        iniHourOld = Val(encryptionW.DecryptData(iniFile.GetKeyValue("CurrentTime", "Hour")))
-        iniMinuteOld = Val(encryptionW.DecryptData(iniFile.GetKeyValue("CurrentTime", "Minute")))
-        iniDateUntil = Date.Parse(encryptionW.DecryptData(iniFile.GetKeyValue("Time", "Date")))
-        iniHourUntil = Val(encryptionW.DecryptData(iniFile.GetKeyValue("Time", "Hour")))
-        iniMinuteUntil = Val(encryptionW.DecryptData(iniFile.GetKeyValue("Time", "Minute")))
+        DateTime.TryParse(encryptionW.DecryptData(iniFile.GetKeyValue("CurrentTime", "Now")), iniDateOld)
+        DateTime.TryParse(encryptionW.DecryptData(iniFile.GetKeyValue("Time", "Until")), iniDateUntil)
 
-        iniYearDiff = Date.Now.Year - iniDateOld.Year
-        iniMonthDiff = Date.Now.Month - iniDateOld.Month
-        iniDayDiff = Date.Now.Day - iniDateOld.Day
-        iniHourDiff = Date.Now.Hour - iniHourOld
-        iniMinuteDiff = Date.Now.Minute - iniMinuteOld
+        iniSecondsLeft = DateDiff(DateInterval.Second, iniDateOld, iniDateUntil)
 
-        iniDateNew = New Date(iniYearDiff + iniDateUntil.Year, iniMonthDiff + iniDateUntil.Month, iniDayDiff + iniDateUntil.Day)
-        iniHourNew = iniHourUntil + iniHourDiff
-        iniMinuteNew = iniMinuteUntil + iniMinuteDiff
+        newDateUntil = DateAdd(DateInterval.Second, iniSecondsLeft, DateTime.Now)
 
-        iniFile.SetKeyValue("Time", "Date", encryptionW.EncryptData(iniDateNew.ToString))
-        iniFile.SetKeyValue("Time", "Hour", encryptionW.EncryptData(iniHourNew.ToString))
-        iniFile.SetKeyValue("Time", "Minute", encryptionW.EncryptData(iniMinuteNew.ToString))
+        iniFile.SetKeyValue("Time", "Until", encryptionW.EncryptData(newDateUntil.ToString))
         iniFile.SetKeyValue("Time", "TimeChanging", "no")
         iniFile.Save(Application.StartupPath + "\ct_settings.ini")
 

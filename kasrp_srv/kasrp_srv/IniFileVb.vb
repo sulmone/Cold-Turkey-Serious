@@ -24,7 +24,8 @@ Public Class IniFile
         End If
         '  Clear the object... 
         Dim tempsection As IniSection = Nothing
-        Dim oReader As New StreamReader(sFileName)
+        Dim fileStream As FileStream = New FileStream(sFileName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite)
+        Dim oReader As New StreamReader(fileStream)
         Dim regexcomment As New Regex("^([\s]*#.*)", (RegexOptions.Singleline Or RegexOptions.IgnoreCase))
         ' Broken but left for history
         'Dim regexsection As New Regex("\[[\s]*([^\[\s].*[^\s\]])[\s]*\]", (RegexOptions.Singleline Or RegexOptions.IgnoreCase))

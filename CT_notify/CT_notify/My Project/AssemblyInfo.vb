@@ -14,7 +14,7 @@ Imports System.Runtime.InteropServices
 <Assembly: AssemblyDescription("Cold Turkey Notification")> 
 <Assembly: AssemblyCompany("")> 
 <Assembly: AssemblyProduct("Cold Turkey")> 
-<Assembly: AssemblyCopyright("Copyright © Felix Belzile 2011")> 
+<Assembly: AssemblyCopyright("Copyright © Felix Belzile 2012")> 
 <Assembly: AssemblyTrademark("")> 
 
 <Assembly: ComVisible(False)> 
@@ -33,7 +33,7 @@ Imports System.Runtime.InteropServices
 ' by using the '*' as shown below:
 ' <Assembly: AssemblyVersion("1.0.*")> 
 
-<Assembly: AssemblyVersion("0.6.0.0")> 
-<Assembly: AssemblyFileVersion("0.6.0.0")> 
+<Assembly: AssemblyVersion("0.7.0.0")> 
+<Assembly: AssemblyFileVersion("0.7.0.0")> 
 
 <Assembly: NeutralResourcesLanguageAttribute("en")> 

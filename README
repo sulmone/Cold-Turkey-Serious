@@ -8,5 +8,11 @@ useful for more people.
 /CT_popup     <-- User-level program that is the popup displayed when the time is up
 /kctrp_srv    <-- Root-level Windows service (lock hosts file) and unblocks user when time is up
 
+- Open project files (.sln) with Visual Studio VB.NET 2010
+- Cold Turkey will install a Windows service when started. To remove this service, run this command
+  as an Administrator in the command prompt: 
+  sc delete KCTRP
 
-Questions?    felixbelzile@rogers.com
+Contact:      http://getcoldturkey.com
+              http://felixbelzile.com
+              felixbelzile@rogers.com

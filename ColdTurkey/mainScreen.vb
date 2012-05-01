@@ -1,4 +1,23 @@
-﻿Option Explicit On
+﻿'    Copyright (c) 2011, 2012 Felix Belzile
+'    Official software website: http://getcoldturkey.com
+'    Contact: felixbelzile@rogers.com  Web: http://felixbelzile.com
+
+'    This file is part of Cold Turkey
+'
+'    Cold Turkey is free software: you can redistribute it and/or modify
+'    it under the terms of the GNU General Public License as published by
+'    the Free Software Foundation, either version 3 of the License, or
+'    (at your option) any later version.
+'
+'    Cold Turkey is distributed in the hope that it will be useful,
+'    but WITHOUT ANY WARRANTY; without even the implied warranty of
+'    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+'    GNU General Public License for more details.
+'
+'    You should have received a copy of the GNU General Public License
+'    along with Cold Turkey.  If not, see <http://www.gnu.org/licenses/>.
+
+Option Explicit On
 Imports System.IO
 Imports System.Security.Cryptography
 Imports Microsoft.Win32
@@ -8,77 +27,70 @@ Imports ColdTurkey.IniFile
 
 Public Class ColdTurkey
     Dim hostDirS As String
-    Dim srvAlreadyExistsB As Boolean = False
+    Dim svcAlreadyExists As Boolean = False
     Dim firstTimeClickCustomBoxB As Boolean = True
     Dim hour24I As Integer
     Dim encryptionW As New Simple3Des("ct_textbox")
-    Dim iniFile As IniFile
 
     Private Sub Form1_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
 
         Dim secondsStillBlocked As Integer
-        iniFile = New IniFile
+        Dim iniFile = New IniFile
+        Dim iniFileBroken As Boolean = False
         hostDirS = Environ("WinDir") & "\system32\drivers\etc\hosts"
 
-        Try
-            iniFile.Load(Application.StartupPath + "\ct_settings.ini")
-        Catch ex As Exception
-            MsgBox("Error reading mah configuration file. Please re-install me.")
-            End
-        End Try
+        If My.Computer.FileSystem.FileExists(Application.StartupPath + "\ct_settings.ini") = True Then
+            Try
+                iniFile.Load(Application.StartupPath + "\ct_settings.ini")
+                If iniFile.Sections.Count < 2 Then
+                    iniFileBroken = True
+                End If
+            Catch ex As Exception
+                iniFileBroken = True
+            End Try
+        Else
+            iniFileBroken = True
+        End If
+        If iniFileBroken = True Then
+            Try
+                My.Computer.FileSystem.WriteAllText(Application.StartupPath + "\ct_settings.ini", "", False)
+                iniFile.AddSection("Process")
+                iniFile.SetKeyValue("Process", "List", "null")
+                iniFile.AddSection("User")
+                iniFile.SetKeyValue("User", "CustomChecked", "abcdefghijk")
+                iniFile.SetKeyValue("User", "CustomSites", "null")
+                iniFile.SetKeyValue("User", "Done", "yes")
+                iniFile.SetKeyValue("User", "NeedsAlerted", "no")
+                iniFile.AddSection("Time")
+                iniFile.SetKeyValue("Time", "Until", encryptionW.EncryptData(DateTime.Now))
+                iniFile.SetKeyValue("Time", "TimeChanging", "no")
+                iniFile.AddSection("CurrentTime")
+                iniFile.SetKeyValue("CurrentTime", "Now", encryptionW.EncryptData(DateTime.Now))
+                iniFile.Save(Application.StartupPath + "\ct_settings.ini")
+            Catch ex As Exception
+                MsgBox("Error creating configuration file.")
+                End
+            End Try
+        End If
 
         Try
-
             If serviceController.Status = ServiceProcess.ServiceControllerStatus.Stopped Or ServiceProcess.ServiceControllerStatus.StopPending Then
-                srvAlreadyExistsB = True
+                svcAlreadyExists = True
             End If
             If serviceController.Status = ServiceProcess.ServiceControllerStatus.Running Then
 
-                Dim iniDateUntil As Date
-                Dim iniHourUntil, iniMinuteUntil As Integer
+                Dim iniDateUntil As DateTime
                 Dim answer As MsgBoxResult
 
                 Try
-                    iniDateUntil = Date.Parse(encryptionW.DecryptData(iniFile.GetKeyValue("Time", "Date")))
-                    iniHourUntil = Val(encryptionW.DecryptData(iniFile.GetKeyValue("Time", "Hour")))
-                    iniMinuteUntil = Val(encryptionW.DecryptData(iniFile.GetKeyValue("Time", "Minute")))
+                    DateTime.TryParse(encryptionW.DecryptData(iniFile.GetKeyValue("Time", "Until")), iniDateUntil)
                 Catch ex As Exception
-                    MsgBox("Error reading mah configuration file. Please re-install me.")
+                    MsgBox("Error reading my configuration file. Please re-install me.")
                     End
                 End Try
 
-                secondsStillBlocked = DateAndTime.DateDiff(DateInterval.Second, DateAndTime.Today.Date, iniDateUntil.Date)
-                If TimeOfDay.Hour < iniHourUntil Then
-                    secondsStillBlocked = secondsStillBlocked + ((iniHourUntil - TimeOfDay.Hour) * 60 * 60)
-                    If TimeOfDay.Minute < iniMinuteUntil Then
-                        secondsStillBlocked = secondsStillBlocked + ((iniMinuteUntil - TimeOfDay.Minute) * 60)
-                    ElseIf TimeOfDay.Minute > iniMinuteUntil Then
-                        secondsStillBlocked = secondsStillBlocked - ((TimeOfDay.Minute - (iniMinuteUntil)) * 60)
-                    End If
-                ElseIf TimeOfDay.Hour = iniHourUntil Then
-                    If TimeOfDay.Minute < iniMinuteUntil Then
-                        secondsStillBlocked = secondsStillBlocked + ((iniMinuteUntil - TimeOfDay.Minute) * 60)
-                    ElseIf TimeOfDay.Minute > iniMinuteUntil Then
-                        secondsStillBlocked = secondsStillBlocked - ((TimeOfDay.Minute - iniMinuteUntil) * 60)
-                    End If
-                ElseIf TimeOfDay.Hour > iniHourUntil Then
-                    secondsStillBlocked = secondsStillBlocked - ((TimeOfDay.Hour - iniHourUntil) * 60 * 60)
-                    If TimeOfDay.Minute < iniMinuteUntil Then
-                        secondsStillBlocked = secondsStillBlocked + ((iniMinuteUntil - TimeOfDay.Minute) * 60)
-                    ElseIf TimeOfDay.Minute > iniMinuteUntil Then
-                        secondsStillBlocked = secondsStillBlocked - ((TimeOfDay.Minute - (iniMinuteUntil)) * 60)
-                    End If
-                End If
-                secondsStillBlocked = secondsStillBlocked - (TimeOfDay.Second)
-
-                If secondsStillBlocked < -10 And StrComp("no", iniFile.GetKeyValue("Time", "TimeChanging")) = 0 Then
-                    MsgBox("Opps, I should have unblocked you, but for some reason it didn't work! I'm going to fix that right now..." _
-                                + vbNewLine + "Please restart me after clicking OK!")
-                    Me.Hide()
-                    erroredOut()
-                End If
-
-                answer = MsgBox("You are still blocked for: " + seconds2Text(secondsStillBlocked) + vbNewLine + "Do you want to block more sites?", MsgBoxStyle.YesNo, "Cold Turkey")
+                secondsStillBlocked = DateDiff(DateInterval.Second, DateTime.Now, iniDateUntil)
+                answer = MsgBox("You are still blocked for: " + secondsToText(secondsStillBlocked, False) + vbNewLine + "Do you want to block more sites?", MsgBoxStyle.YesNo, "Cold Turkey")
 
                 If (answer = MsgBoxResult.Yes) Then
                     Me.Hide()
@@ -173,14 +185,14 @@ Public Class ColdTurkey
 
     End Sub
 
-    Function seconds2Text(ByVal Seconds) As String
+    Function secondsToText(ByVal Seconds As Integer, ByVal shortVersion As Boolean) As String
         Dim bAddComma As Boolean
         Dim Result As String = ""
         Dim sTemp As String
         Dim days, hours, minutes As Integer
 
         If Seconds <= 0 Or Not IsNumeric(Seconds) Then
-            seconds2Text = "0 seconds"
+            secondsToText = "0 seconds"
             Exit Function
         End If
 
@@ -207,7 +219,9 @@ Public Class ColdTurkey
         Seconds = Seconds - (minutes * 60) - (hours * 3600) - _
            (days * 86400)
 
-        If Seconds > 0 Then Result = Seconds & " second" & AutoS(Seconds)
+        If shortVersion = False Then
+            If Seconds > 0 Then Result = Seconds & " second" & AutoS(Seconds)
+        End If
 
         If minutes > 0 Then
             bAddComma = Result <> ""
@@ -232,73 +246,14 @@ Public Class ColdTurkey
             Result = sTemp & Result
         End If
 
-        seconds2Text = Result
-    End Function
-
-    Function seconds2TextShort(ByVal Seconds) As String
-        Dim bAddComma As Boolean
-        Dim Result As String = ""
-        Dim sTemp As String
-        Dim days, hours, minutes As Integer
-
-        Seconds = Fix(Seconds)
-
-        If Seconds >= 86400 Then
-            days = Fix(Seconds / 86400)
-        Else
-            days = 0
-        End If
-
-        If Seconds - (days * 86400) >= 3600 Then
-            hours = Fix((Seconds - (days * 86400)) / 3600)
-        Else
-            hours = 0
-        End If
-
-        If Seconds - (hours * 3600) - (days * 86400) >= 60 Then
-            minutes = Fix((Seconds - (hours * 3600) - (days * 86400)) / 60)
-        Else
-            minutes = 0
-        End If
-
-        Seconds = Seconds - (minutes * 60) - (hours * 3600) - _
-           (days * 86400)
-
-        If Seconds > 0 Then Result = ""
-
-        If minutes > 0 Then
-            bAddComma = Result <> ""
-            If days = 0 Then
-                sTemp = minutes & " minute" & AutoS(minutes)
-                If bAddComma Then sTemp = sTemp & ", "
-                Result = sTemp & Result
-            End If
-
-        End If
-
-        If hours > 0 Then
-            bAddComma = Result <> ""
-
-            sTemp = hours & " hour" & AutoS(hours)
-            If bAddComma Then sTemp = sTemp & ", "
-            Result = sTemp & Result
-        End If
-
-        If days > 0 Then
-            bAddComma = Result <> ""
-            sTemp = days & " day" & AutoS(days)
-            If bAddComma Then sTemp = sTemp & ", "
-            Result = sTemp & Result
-        End If
-
-        seconds2TextShort = Result
+        secondsToText = Result
     End Function
 
     Function AutoS(ByVal Number)
         If Number = 1 Then AutoS = "" Else AutoS = "s"
     End Function
 
-    Private Sub Label1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
+    Private Sub facebookLabelClick(ByVal sender As System.Object, ByVal e As System.EventArgs)
         If updateStatus.Enabled = True Then
             If updateStatus.Checked = False Then
                 updateStatus.Checked = True
@@ -309,15 +264,12 @@ Public Class ColdTurkey
     End Sub
 
 
-    Private Sub Button1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button1.Click
+    Private Sub goColdTurkey(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button1.Click
 
         Dim checkedSettings As String = ""
         Dim entryListShowWarningHotmail, entryListShowWarningLive, entryListShowWarningEbay, _
             entryListShowWarningYoutube, entryListShowWarningWiki As New System.Windows.Forms.ListViewItem
         Dim responseShowWarning As DialogResult
-
-        iniFile = New IniFile
-        iniFile.Load(Application.StartupPath + "\ct_settings.ini")
 
         listShowWarning.full_list.Clear()
         entryListShowWarningHotmail.ForeColor = Color.Purple
@@ -391,7 +343,8 @@ Public Class ColdTurkey
         If chk_24.Checked = True Then
             checkedSettings = checkedSettings + "z"
         End If
-
+        Dim iniFile = New IniFile
+        iniFile.Load(Application.StartupPath + "\ct_settings.ini")
         iniFile.SetKeyValue("User", "CustomChecked", checkedSettings)
         iniFile.Save(Application.StartupPath + "\ct_settings.ini")
         For Each entry As String In list_cus.Items
@@ -406,9 +359,9 @@ Public Class ColdTurkey
             If responseShowWarning = DialogResult.OK Then
                 If updateStatus.Checked = True Then
                     UpdateFacebookForm.ShowDialog()
-                    startBlock()
+                    writeToHostsFile()
                 Else
-                    startBlock()
+                    writeToHostsFile()
                 End If
             Else
                 Me.Show()
@@ -419,12 +372,94 @@ Public Class ColdTurkey
 
     Private Sub startBlock()
 
+        Dim testWorked As Boolean = False
+
+        testWorked = writeToHostsFileTest()
+        If testWorked = True Then
+            writeToHostsFile()
+            startService()
+
+            If chk_24.Checked = True Then
+                MsgBox("You are now going Cold Turkey until " + hour24.Text + ":" + minute.Text + " on " + DateTimePicker1.Text + "." + vbNewLine + vbNewLine _
+                    + "You might not see the block until you close and reopen your all browser windows. You can see how much time you have left and add more sites by running Cold Turkey again.", MsgBoxStyle.Information, "Cold Turkey")
+            Else
+                MsgBox("You are now going Cold Turkey until " + hour.Text + ":" + minute.Text + " " + amPmSelector.Text + " on " + DateTimePicker1.Text + "." + vbNewLine + vbNewLine _
+                    + "You might not see the block until you close and reopen your all browser windows. You can see how much time you have left and add more sites by running Cold Turkey again.", MsgBoxStyle.Information, "Cold Turkey")
+            End If
+        Else
+            MsgBox("Error writing to your hosts file. Your antivirus most likely doesn't trust what I will do with it. Please don't disable your antivirus though. You have not been blocked from anything.")
+        End If
+
+        End
+
+    End Sub
+
+
+    Private Function writeToHostsFileTest() As Boolean
+
         Dim fs As FileStream
         Dim sw As StreamWriter
-        iniFile = New IniFile
+        Dim iniFile = New IniFile
 
         If My.Computer.FileSystem.FileExists(hostDirS) Then
-            SetAttr(hostDirS, vbNormal)
+            Try
+                SetAttr(hostDirS, vbNormal)
+            Catch ex As Exception
+                Return False
+            End Try
+            Try
+                fs = New FileStream(hostDirS, FileMode.Append, FileAccess.Write, FileShare.Read)
+                sw = New StreamWriter(fs)
+                sw.WriteLine(vbNewLine + "#### Cold Turkey Entries ####")
+                sw.Close()
+
+                Dim fileReader, original As String
+                Dim startpos As Integer
+                fileReader = My.Computer.FileSystem.ReadAllText(hostDirS)
+                startpos = InStr(1, fileReader, "#### Cold Turkey Entries ####")
+                If startpos <> 0 And startpos <= 2 Then
+                    original = ""
+                ElseIf startpos = 0 Then
+                    original = fileReader
+                Else
+                    original = Microsoft.VisualBasic.Left(fileReader, startpos - 1)
+                End If
+                Dim fs2 As New FileStream(hostDirS, FileMode.Create, FileAccess.Write, FileShare.Read)
+                Dim sw2 As New StreamWriter(fs2)
+                sw2.Write(original)
+                sw2.Close()
+                SetAttr(hostDirS, vbReadOnly)
+            Catch ex As Exception
+                Return False
+            End Try
+        Else
+            Try
+                My.Computer.FileSystem.WriteAllText(hostDirS, "", False)
+                If My.Computer.FileSystem.FileExists(hostDirS) Then
+                    Return True
+                End If
+            Catch ex As Exception
+                Return False
+            End Try
+        End If
+
+        Return True
+    End Function
+
+    Private Sub writeToHostsFile()
+
+        Dim fs As FileStream
+        Dim sw As StreamWriter
+        Dim iniFile = New IniFile
+
+        If My.Computer.FileSystem.FileExists(hostDirS) Then
+            Try
+                SetAttr(hostDirS, vbNormal)
+            Catch ex As Exception
+                MsgBox("Error removing hosts file read-only flag")
+                erroredOut()
+            End Try
+
         End If
 
         Try
@@ -1479,26 +1514,25 @@ Public Class ColdTurkey
             MsgBox("Error writing to your hosts file. Your antivirus most likely doesn't trust what I will do with it. Please don't disable your antivirus though. You have not been blocked from anything.")
             erroredOut()
         End Try
+    End Sub
+
+    Private Sub startService()
+
+        Dim dateToBlockToString As String = DateTimePicker1.Value.Month & "/" & DateTimePicker1.Value.Day & "/" & DateTimePicker1.Value.Year & " " & hour24I & ":" & minute.Text & ":00"
 
         Try
+            Dim iniFile As New IniFile
             iniFile.Load(Application.StartupPath + "\ct_settings.ini")
-            iniFile.SetKeyValue("Time", "Date", encryptionW.EncryptData(DateTimePicker1.Value.ToString))
-            iniFile.SetKeyValue("Time", "Hour", encryptionW.EncryptData(hour24I.ToString))
-            iniFile.SetKeyValue("Time", "Minute", encryptionW.EncryptData(minute.Text))
+            iniFile.SetKeyValue("Time", "Until", encryptionW.EncryptData(dateToBlockToString))
+            iniFile.SetKeyValue("User", "NeedsAlerted", "yes")
+            iniFile.SetKeyValue("User", "Done", "no")
+            iniFile.Save(Application.StartupPath + "\ct_settings.ini")
         Catch ex As Exception
-            MsgBox("Error writing to mah configuration file. Please re-install me.")
+            MsgBox("Error writing to my configuration file. Please re-install me.")
             erroredOut()
         End Try
 
-        If chk_24.Checked = True Then
-            MsgBox("You are now going Cold Turkey until " + hour24.Text + ":" + minute.Text + " on " + DateTimePicker1.Text + "." + vbNewLine + vbNewLine _
-                + "You might not see the block until you close and reopen your all browser windows. You can see how much time you have left and add more sites by running Cold Turkey again.", MsgBoxStyle.Information, "Cold Turkey")
-        Else
-            MsgBox("You are now going Cold Turkey until " + hour.Text + ":" + minute.Text + " " + amPmSelector.Text + " on " + DateTimePicker1.Text + "." + vbNewLine + vbNewLine _
-                + "You might not see the block until you close and reopen your all browser windows. You can see how much time you have left and add more sites by running Cold Turkey again.", MsgBoxStyle.Information, "Cold Turkey")
-        End If
-
-        If srvAlreadyExistsB = False Then
+        If svcAlreadyExists = False Then
             ServiceInstaller.InstallAndStart("KCTRP", "KCTRP", Application.StartupPath + "\KCTRP_srv.exe")
         Else
             ServiceInstaller.StartService("KCTRP")
@@ -1506,7 +1540,7 @@ Public Class ColdTurkey
 
         Try
             Dim serviceController As System.ServiceProcess.ServiceController
-            Dim timeSpan As New TimeSpan(0, 0, 30)
+            Dim timeSpan As New TimeSpan(0, 0, 31)
 
             serviceController = New System.ServiceProcess.ServiceController("KCTRP")
             serviceController.WaitForStatus(ServiceProcess.ServiceControllerStatus.Running, timeSpan)
@@ -1517,31 +1551,20 @@ Public Class ColdTurkey
             Catch ex As Exception
                 MsgBox("There was an error writing the ct_notify.exe startup entry")
             End Try
+            
             Try
-                iniFile.SetKeyValue("User", "NeedsAlerted", "yes")
-                iniFile.SetKeyValue("User", "Done", "no")
-                iniFile.Save(Application.StartupPath + "\ct_settings.ini")
-            Catch ex As Exception
-                MsgBox("Error writing to mah configuration file. Please re-install me.")
-            End Try
-            Try
+                Threading.Thread.Sleep(500) 'To offset the periodical reading times of ct_settings.ini between KCTRP and ct_notify
                 Process.Start(Application.StartupPath + "\ct_notify.exe")
                 Process.Start(Application.StartupPath + "\ct_notify2.exe")
             Catch ex As Exception
                 MsgBox("There was an error starting the notification program. Cold Turkey will still work, but you won't be notified when your block is over.")
             End Try
 
-
-        Catch ex As TimeoutException
-            MsgBox("The service could not be started. This is either caused by your antivirus software or firewall. Please don't disable your antivirus to run this program." + vbNewLine + vbNewLine + _
-                   "You can try to add a firewall exception to allow internet access to both 'ColdTurkey.exe' and 'kctrp.exe' in the ColdTurkey program folder, then try again.")
-            erroredOut()
         Catch ex As Exception
-            MsgBox("The service was not found and therefore cannot be run. This is a big boo-boo that you should e-mail me about...")
+            MsgBox("The service could not be started. This problem is likely caused by your antivirus software, but please don't disable your antivirus to run this program." + vbNewLine + vbNewLine + _
+                   "You can try to add an antivirus exception to allow access to the hosts file by both 'ColdTurkey.exe' and 'kctrp.exe' in the ColdTurkey program folder, then try again.")
             erroredOut()
         End Try
-
-        End
 
     End Sub
 
@@ -1567,9 +1590,11 @@ Public Class ColdTurkey
         sw2.Write(original)
         sw2.Close()
         SetAttr(hostDirS, vbReadOnly)
+        Dim iniFile As New IniFile
+        iniFile.Load(Application.StartupPath + "\ct_settings.ini")
         iniFile.SetKeyValue("User", "NeedsAlerted", "no")
         iniFile.SetKeyValue("User", "Done", "yes")
-
+        iniFile.Save(Application.StartupPath + "\ct_settings.ini")
         End
 
     End Sub
@@ -1625,7 +1650,7 @@ Public Class ColdTurkey
 
     Private Sub lbl_info_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lbl_info.Click
         Dim message As String
-        message = "Cold Turkey (0.6 Beta) Serious Edition" + vbNewLine + "(c) Copyright Felix Belzile, 2011" + vbNewLine + vbNewLine + "Cold Turkey will temporarily block addicting sites and games" + vbNewLine + "so that you can get some work done!"
+        message = "Cold Turkey (0.7 Beta) Serious Edition" + vbNewLine + "(c) Copyright Felix Belzile, 2012" + vbNewLine + vbNewLine + "Cold Turkey will temporarily block addicting sites and games" + vbNewLine + "so that you can get some work done!"
         MsgBox(message, vbOKOnly, "About Cold Turkey")
     End Sub
 
@@ -1654,8 +1679,6 @@ Public Class ColdTurkey
 
         Dim tempString As String = txt_add.Text.ToString
         Dim newKey As String = ""
-        iniFile = New IniFile
-        iniFile.Load(Application.StartupPath + "\ct_settings.ini")
 
         If StrComp(tempString, "") = 0 Then
         ElseIf InStr(tempString, ".") = 0 Then
@@ -1680,6 +1703,8 @@ Public Class ColdTurkey
                 For Each entry As String In list_cus.Items
                     newKey = newKey + entry + ";"
                 Next
+                Dim iniFile As New IniFile
+                iniFile.Load(Application.StartupPath + "\ct_settings.ini")
                 iniFile.SetKeyValue("User", "CustomSites", newKey)
                 iniFile.Save(Application.StartupPath + "\ct_settings.ini")
             End If
@@ -1698,16 +1723,18 @@ Public Class ColdTurkey
 
         Dim indexOfItem As Integer
         Dim newKey As String = ""
-        Dim iniFile As New IniFile()
-        iniFile.Load(Application.StartupPath + "\ct_settings.ini")
 
         indexOfItem = list_cus.SelectedIndex
         list_cus.Items.Remove(list_cus.SelectedItem)
         For Each entry As String In list_cus.Items
             newKey = newKey + entry + ";"
         Next
+
+        Dim iniFile As New IniFile
+        iniFile.Load(Application.StartupPath + "\ct_settings.ini")
         iniFile.SetKeyValue("User", "CustomSites", newKey)
         iniFile.Save(Application.StartupPath + "\ct_settings.ini")
+
         If indexOfItem < list_cus.Items.Count And indexOfItem > 0 Then
             list_cus.SetSelected(indexOfItem, True)
         ElseIf indexOfItem = list_cus.Items.Count And indexOfItem > 0 Then
@@ -1740,7 +1767,7 @@ Public Class ColdTurkey
             End If
             hour24.Visible = True
             If (hour24.SelectedIndex >= 0 And minute.SelectedIndex >= 0) Or (hour.SelectedIndex >= 0 And minute.SelectedIndex >= 0 And amPmSelector.SelectedIndex >= 0) Then
-                calculatediff()
+                calculateTimeDiff()
             End If
 
         Else
@@ -1763,7 +1790,7 @@ Public Class ColdTurkey
                 End If
             End If
             If (hour24.SelectedIndex >= 0 And minute.SelectedIndex >= 0) Or (hour.SelectedIndex >= 0 And minute.SelectedIndex >= 0 And amPmSelector.SelectedIndex >= 0) Then
-                calculatediff()
+                calculateTimeDiff()
             End If
         End If
     End Sub
@@ -1778,9 +1805,9 @@ Public Class ColdTurkey
 
     Private Sub list_prog_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles list_prog.SelectedIndexChanged
         If list_prog.SelectedIndex >= 0 Then
-            Button3.Enabled = True
+            removeProg.Enabled = True
         Else
-            Button3.Enabled = False
+            removeProg.Enabled = False
         End If
     End Sub
 
@@ -1800,9 +1827,6 @@ Public Class ColdTurkey
 
         Dim filePathS, reader As String
         Dim newKey As String = ""
-        iniFile = New IniFile
-        iniFile.Load(Application.StartupPath + "\ct_settings.ini")
-
         If importfile.ShowDialog() = Windows.Forms.DialogResult.OK Then
             filePathS = importfile.FileName
             If File.Exists(filePathS) Then
@@ -1835,6 +1859,8 @@ Public Class ColdTurkey
                                     For Each entry As String In list_cus.Items
                                         newKey = newKey + entry + ";"
                                     Next
+                                    Dim iniFile = New IniFile
+                                    iniFile.Load(Application.StartupPath + "\ct_settings.ini")
                                     iniFile.SetKeyValue("User", "CustomSites", newKey)
                                     iniFile.Save(Application.StartupPath + "\ct_settings.ini")
                                 End If
@@ -1860,38 +1886,38 @@ Public Class ColdTurkey
 
     Private Sub hour24_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles hour24.SelectedIndexChanged
         If hour24.SelectedIndex >= 0 And minute.SelectedIndex >= 0 Then
-            calculatediff()
+            calculateTimeDiff()
         End If
 
     End Sub
 
     Private Sub hour_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles hour.SelectedIndexChanged
         If hour.SelectedIndex >= 0 And minute.SelectedIndex >= 0 And amPmSelector.SelectedIndex >= 0 Then
-            calculatediff()
+            calculateTimeDiff()
         End If
     End Sub
 
     Private Sub minute_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles minute.SelectedIndexChanged
         If (hour24.SelectedIndex >= 0 And minute.SelectedIndex >= 0) Or (hour.SelectedIndex >= 0 And minute.SelectedIndex >= 0 And amPmSelector.SelectedIndex >= 0) Then
-            calculatediff()
+            calculateTimeDiff()
         End If
     End Sub
 
     Private Sub mornin_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles amPmSelector.SelectedIndexChanged
         If hour.SelectedIndex >= 0 And minute.SelectedIndex >= 0 And amPmSelector.SelectedIndex >= 0 Then
-            calculatediff()
+            calculateTimeDiff()
         End If
     End Sub
 
     Private Sub DateTimePicker1_ValueChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles DateTimePicker1.ValueChanged
         If (hour24.SelectedIndex >= 0 And minute.SelectedIndex >= 0) Or (hour.SelectedIndex >= 0 And minute.SelectedIndex >= 0 And amPmSelector.SelectedIndex >= 0) Then
-            calculatediff()
+            calculateTimeDiff()
         End If
     End Sub
 
-    Private Sub calculatediff()
+    Private Sub calculateTimeDiff()
 
-        Dim secondsout As Integer
+        Dim secondsout As Long
 
         If chk_24.Checked = False Then
             If StrComp(amPmSelector.Text, "PM", vbTextCompare) = 0 And Val(hour.Text) >= 1 And Val(hour.Text) <= 11 Then
@@ -1905,79 +1931,40 @@ Public Class ColdTurkey
             hour24I = Val(hour24.Text)
         End If
 
-        If DateAndTime.Month(Now) <> DateTimePicker1.Value.Month Then
-            secondsout = ((Day(DateSerial(DateTimePicker1.Value.Year, DateAndTime.Month(Now) + 1, 0)) - DateAndTime.Day(Now)) + DateTimePicker1.Value.Day) * 86400
-            If TimeOfDay.Hour < hour24I Then
-                secondsout = secondsout + ((hour24I - TimeOfDay.Hour) * 60 * 60)
-                If TimeOfDay.Minute < Val(minute.Text) Then
-                    secondsout = secondsout + ((Val(minute.Text) - TimeOfDay.Minute) * 60)
-                ElseIf TimeOfDay.Minute > Val(minute.Text) Then
-                    secondsout = secondsout - ((TimeOfDay.Minute - (Val(minute.Text))) * 60)
-                End If
-            ElseIf TimeOfDay.Hour = hour24I Then
-                If TimeOfDay.Minute < Val(minute.Text) Then
-                    secondsout = secondsout + ((Val(minute.Text) - TimeOfDay.Minute) * 60)
-                ElseIf TimeOfDay.Minute > Val(minute.Text) Then
-                    secondsout = secondsout - ((TimeOfDay.Minute - Val(minute.Text)) * 60)
-                End If
-            ElseIf TimeOfDay.Hour > hour24I Then
-                secondsout = secondsout - ((TimeOfDay.Hour - hour24I) * 60 * 60)
-                If TimeOfDay.Minute < Val(minute.Text) Then
-                    secondsout = secondsout + ((Val(minute.Text) - TimeOfDay.Minute) * 60)
-                ElseIf TimeOfDay.Minute > Val(minute.Text) Then
-                    secondsout = secondsout - ((TimeOfDay.Minute - (Val(minute.Text))) * 60)
-                End If
-            End If
 
-        ElseIf DateAndTime.Month(Now) = DateTimePicker1.Value.Month Then
-            secondsout = (DateTimePicker1.Value.Day - DateAndTime.Day(Now)) * 86400
-            If TimeOfDay.Hour < hour24I Then
-                secondsout = secondsout + ((hour24I - TimeOfDay.Hour) * 60 * 60)
-                If TimeOfDay.Minute < Val(minute.Text) Then
-                    secondsout = secondsout + ((Val(minute.Text) - TimeOfDay.Minute) * 60)
-                ElseIf TimeOfDay.Minute > Val(minute.Text) Then
-                    secondsout = secondsout - ((TimeOfDay.Minute - (Val(minute.Text))) * 60)
-                End If
-            ElseIf TimeOfDay.Hour = hour24I Then
-                If TimeOfDay.Minute < Val(minute.Text) Then
-                    secondsout = secondsout + ((Val(minute.Text) - TimeOfDay.Minute) * 60)
-                ElseIf TimeOfDay.Minute > Val(minute.Text) Then
-                    secondsout = secondsout - ((TimeOfDay.Minute - Val(minute.Text)) * 60)
-                End If
-            ElseIf TimeOfDay.Hour > hour24I Then
-                secondsout = secondsout - ((TimeOfDay.Hour - hour24I) * 60 * 60)
-                If TimeOfDay.Minute < Val(minute.Text) Then
-                    secondsout = secondsout + ((Val(minute.Text) - TimeOfDay.Minute) * 60)
-                ElseIf TimeOfDay.Minute > Val(minute.Text) Then
-                    secondsout = secondsout - ((TimeOfDay.Minute - (Val(minute.Text))) * 60)
-                End If
-            End If
-        End If
-        secondsout = secondsout - (TimeOfDay.Second)
+        Dim didItWork As Boolean
+        Dim dateToBlockTo As DateTime
+        Dim dateToBlockToString As String = DateTimePicker1.Value.Month & "/" & DateTimePicker1.Value.Day & "/" & DateTimePicker1.Value.Year & " " & hour24I & ":" & minute.Text & ":00"
+        didItWork = DateTime.TryParse(dateToBlockToString, dateToBlockTo)
+        If didItWork = True Then
+            secondsout = DateDiff(DateInterval.Second, DateTime.Now, dateToBlockTo)
 
-        If secondsout > 86400 Then
-            timewarning.Text = "(Nice! Thats about " + seconds2TextShort(secondsout) + ")"
-            timewarning.ForeColor = Color.Purple
-            Button1.Enabled = True
-        ElseIf secondsout < 60 And secondsout > 0 Then
-            timewarning.Text = "(under a minute)"
-            timewarning.ForeColor = Color.Purple
-            Button1.Enabled = False
-        ElseIf secondsout <= 0 Then
-            timewarning.Text = "Please enter a time in the future."
-            timewarning.ForeColor = Color.Gray
-            Button1.Enabled = False
+            If secondsout > 86400 Then
+                timewarning.Text = "(Nice! Thats about " + secondsToText(secondsout, True) + ")"
+                timewarning.ForeColor = Color.Purple
+                Button1.Enabled = True
+            ElseIf secondsout < 120 And secondsout > 0 Then
+                timewarning.Text = "(under two minutes)"
+                timewarning.ForeColor = Color.Purple
+                Button1.Enabled = False
+            ElseIf secondsout <= 0 Then
+                timewarning.Text = "Please enter a time in the future."
+                timewarning.ForeColor = Color.Gray
+                Button1.Enabled = False
+            Else
+                timewarning.Text = "(about " + secondsToText(secondsout, True) + ")"
+                timewarning.ForeColor = Color.Green
+                Button1.Enabled = True
+            End If
         Else
-            timewarning.Text = "(about " + seconds2TextShort(secondsout) + ")"
-            timewarning.ForeColor = Color.Green
-            Button1.Enabled = True
+            MsgBox("Error calculating time.")
         End If
     End Sub
 
     Private Sub ColdTurkey_Shown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shown
 
         Dim serverVersion As Double
-        Dim thisVersion As Double = 0.6
+        Dim thisVersion As Double = 0.7
         Dim answer As MsgBoxResult
         Try
             serverVersion = GetHTML("http://getcoldturkey.com/version.html")
@@ -1995,9 +1982,6 @@ Public Class ColdTurkey
 
     Private Sub addProgram(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button2.Click
 
-        iniFile = New IniFile
-        iniFile.Load(Application.StartupPath + "\ct_settings.ini")
-
         If addProgramDialog.ShowDialog() = Windows.Forms.DialogResult.OK Then
 
             Dim filePathS As String = addProgramDialog.FileName
@@ -2007,6 +1991,8 @@ Public Class ColdTurkey
                 For Each entry As String In list_prog.Items
                     newKey = newKey + entry + ";"
                 Next
+                Dim iniFile = New IniFile
+                iniFile.Load(Application.StartupPath + "\ct_settings.ini")
                 iniFile.SetKeyValue("Process", "List", encryptionW.EncryptData(newKey))
                 iniFile.Save(Application.StartupPath + "\ct_settings.ini")
 
@@ -2014,10 +2000,10 @@ Public Class ColdTurkey
         End If
     End Sub
 
-    Private Sub removeProgram(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button3.Click
+    Private Sub removeProgram(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles removeProg.Click
         Dim indexOfItem As Integer
         Dim newKey As String = ""
-        Dim iniFile As New IniFile()
+        Dim iniFile As New IniFile
         iniFile.Load(Application.StartupPath + "\ct_settings.ini")
 
         indexOfItem = list_prog.SelectedIndex
@@ -2030,6 +2016,7 @@ Public Class ColdTurkey
         Else
             iniFile.SetKeyValue("Process", "List", newKey)
         End If
+
         iniFile.Save(Application.StartupPath + "\ct_settings.ini")
         If indexOfItem < list_prog.Items.Count And indexOfItem > 0 Then
             list_prog.SetSelected(indexOfItem, True)

@@ -10,3 +10,7 @@ C:\Users\felix\Desktop\Cold-Turkey-Serious\CT_popup\CT_popup\obj\x86\Release\Gen
 C:\Users\felix\Desktop\Cold-Turkey-Serious\CT_popup\CT_popup\obj\x86\Release\CT_popup.exe
 C:\Users\felix\Desktop\Cold-Turkey-Serious\CT_popup\CT_popup\obj\x86\Release\CT_popup.xml
 C:\Users\felix\Desktop\Cold-Turkey-Serious\CT_popup\CT_popup\obj\x86\Release\CT_popup.pdb
+E:\Cold-Turkey-Serious\CT_popup\CT_popup\bin\Release\CT_popup.exe.config
+E:\Cold-Turkey-Serious\CT_popup\CT_popup\obj\x86\Release\CT_popup.exe
+E:\Cold-Turkey-Serious\CT_popup\CT_popup\obj\x86\Release\CT_popup.xml
+E:\Cold-Turkey-Serious\CT_popup\CT_popup\obj\x86\Release\CT_popup.pdb

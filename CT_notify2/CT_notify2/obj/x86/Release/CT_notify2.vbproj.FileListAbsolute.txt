@@ -22,3 +22,15 @@ C:\Users\felix\Desktop\Cold-Turkey-Serious\CT_notify2\CT_notify2\obj\x86\Release
 C:\Users\felix\Desktop\Cold-Turkey-Serious\CT_notify2\CT_notify2\obj\x86\Release\CT_notify2.Resources.resources
 C:\Users\felix\Desktop\Cold-Turkey-Serious\CT_notify2\CT_notify2\obj\x86\Release\GenerateResource-ResGen.read.1.tlog
 C:\Users\felix\Desktop\Cold-Turkey-Serious\CT_notify2\CT_notify2\obj\x86\Release\GenerateResource-ResGen.write.1.tlog
+E:\Cold-Turkey-Serious\CT_notify2\CT_notify2\bin\Release\CT_notify2.exe.config
+E:\Cold-Turkey-Serious\CT_notify2\CT_notify2\obj\x86\Release\CT_notify2.exe
+E:\Cold-Turkey-Serious\CT_notify2\CT_notify2\obj\x86\Release\CT_notify2.xml
+E:\Cold-Turkey-Serious\CT_notify2\CT_notify2\obj\x86\Release\CT_notify2.pdb
+E:\Cold-Turkey-Serious\CT_notify2\CT_notify2\bin\Release\CT_notify2.exe
+E:\Cold-Turkey-Serious\CT_notify2\CT_notify2\bin\Release\CT_notify2.pdb
+E:\Cold-Turkey-Serious\CT_notify2\CT_notify2\bin\Release\CT_notify2.xml
+E:\Cold-Turkey-Serious\CT_notify2\CT_notify2\obj\x86\Release\ResolveAssemblyReference.cache
+E:\Cold-Turkey-Serious\CT_notify2\CT_notify2\obj\x86\Release\CT_notify2.Form1.resources
+E:\Cold-Turkey-Serious\CT_notify2\CT_notify2\obj\x86\Release\CT_notify2.Resources.resources
+E:\Cold-Turkey-Serious\CT_notify2\CT_notify2\obj\x86\Release\GenerateResource-ResGen.read.1.tlog
+E:\Cold-Turkey-Serious\CT_notify2\CT_notify2\obj\x86\Release\GenerateResource-ResGen.write.1.tlog

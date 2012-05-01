@@ -30,3 +30,17 @@ C:\Users\felix\Desktop\Cold-Turkey-Serious\CT_notify\CT_notify\obj\x86\Release\G
 C:\Users\felix\Desktop\Cold-Turkey-Serious\CT_notify\CT_notify\obj\x86\Release\GenerateResource.read.1.tlog
 C:\Users\felix\Desktop\Cold-Turkey-Serious\CT_notify\CT_notify\obj\x86\Release\GenerateResource-ResGen.write.1.tlog
 C:\Users\felix\Desktop\Cold-Turkey-Serious\CT_notify\CT_notify\obj\x86\Release\GenerateResource.write.1.tlog
+E:\Cold-Turkey-Serious\CT_notify\CT_notify\bin\Release\ct_notify.exe.config
+E:\Cold-Turkey-Serious\CT_notify\CT_notify\obj\x86\Release\ct_notify.exe
+E:\Cold-Turkey-Serious\CT_notify\CT_notify\obj\x86\Release\ct_notify.xml
+E:\Cold-Turkey-Serious\CT_notify\CT_notify\obj\x86\Release\ct_notify.pdb
+E:\Cold-Turkey-Serious\CT_notify\CT_notify\bin\Release\ct_notify.exe
+E:\Cold-Turkey-Serious\CT_notify\CT_notify\bin\Release\ct_notify.pdb
+E:\Cold-Turkey-Serious\CT_notify\CT_notify\bin\Release\ct_notify.xml
+E:\Cold-Turkey-Serious\CT_notify\CT_notify\obj\x86\Release\ResolveAssemblyReference.cache
+E:\Cold-Turkey-Serious\CT_notify\CT_notify\obj\x86\Release\ct_notify.Form1.resources
+E:\Cold-Turkey-Serious\CT_notify\CT_notify\obj\x86\Release\ct_notify.Resources.resources
+E:\Cold-Turkey-Serious\CT_notify\CT_notify\obj\x86\Release\GenerateResource-ResGen.read.1.tlog
+E:\Cold-Turkey-Serious\CT_notify\CT_notify\obj\x86\Release\GenerateResource.read.1.tlog
+E:\Cold-Turkey-Serious\CT_notify\CT_notify\obj\x86\Release\GenerateResource.write.1.tlog
+E:\Cold-Turkey-Serious\CT_notify\CT_notify\obj\x86\Release\GenerateResource-ResGen.write.1.tlog

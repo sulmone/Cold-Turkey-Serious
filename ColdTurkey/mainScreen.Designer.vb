@@ -43,7 +43,7 @@ Partial Class ColdTurkey
         Me.chk_twitter = New System.Windows.Forms.CheckBox()
         Me.chk_myspace = New System.Windows.Forms.CheckBox()
         Me.pan_apps = New System.Windows.Forms.Panel()
-        Me.Button3 = New System.Windows.Forms.Button()
+        Me.removeProg = New System.Windows.Forms.Button()
         Me.Button2 = New System.Windows.Forms.Button()
         Me.list_prog = New System.Windows.Forms.ListBox()
         Me.pan_custom = New System.Windows.Forms.Panel()
@@ -304,7 +304,7 @@ Partial Class ColdTurkey
         'pan_apps
         '
         Me.pan_apps.BackColor = System.Drawing.Color.Transparent
-        Me.pan_apps.Controls.Add(Me.Button3)
+        Me.pan_apps.Controls.Add(Me.removeProg)
         Me.pan_apps.Controls.Add(Me.Button2)
         Me.pan_apps.Controls.Add(Me.list_prog)
         Me.pan_apps.Location = New System.Drawing.Point(45, 187)
@@ -315,12 +315,12 @@ Partial Class ColdTurkey
         '
         'Button3
         '
-        Me.Button3.Location = New System.Drawing.Point(278, 33)
-        Me.Button3.Name = "Button3"
-        Me.Button3.Size = New System.Drawing.Size(80, 22)
-        Me.Button3.TabIndex = 2
-        Me.Button3.Text = "- Remove"
-        Me.Button3.UseVisualStyleBackColor = True
+        Me.removeProg.Location = New System.Drawing.Point(278, 33)
+        Me.removeProg.Name = "Button3"
+        Me.removeProg.Size = New System.Drawing.Size(80, 22)
+        Me.removeProg.TabIndex = 2
+        Me.removeProg.Text = "- Remove"
+        Me.removeProg.UseVisualStyleBackColor = True
         '
         'Button2
         '
@@ -671,7 +671,7 @@ Partial Class ColdTurkey
     Friend WithEvents importfile As System.Windows.Forms.OpenFileDialog
     Friend WithEvents list_prog As System.Windows.Forms.ListBox
     Friend WithEvents Button2 As System.Windows.Forms.Button
-    Friend WithEvents Button3 As System.Windows.Forms.Button
+    Friend WithEvents removeProg As System.Windows.Forms.Button
     Friend WithEvents addProgramDialog As System.Windows.Forms.OpenFileDialog
 
 End Class
