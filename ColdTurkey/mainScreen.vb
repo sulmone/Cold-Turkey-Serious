@@ -24,6 +24,7 @@ Imports Microsoft.Win32
 Imports Microsoft.VisualBasic
 Imports ServiceTools
 Imports ColdTurkey.IniFile
+Imports System.Globalization
 
 Public Class ColdTurkey
     Dim hostDirS As String
@@ -37,6 +38,7 @@ Public Class ColdTurkey
         Dim secondsStillBlocked As Integer
         Dim iniFile = New IniFile
         Dim iniFileBroken As Boolean = False
+        Dim culture As CultureInfo = New CultureInfo("en-CA")
         hostDirS = Environ("WinDir") & "\system32\drivers\etc\hosts"
 
         If My.Computer.FileSystem.FileExists(Application.StartupPath + "\ct_settings.ini") = True Then
@@ -83,7 +85,7 @@ Public Class ColdTurkey
                 Dim answer As MsgBoxResult
 
                 Try
-                    DateTime.TryParse(encryptionW.DecryptData(iniFile.GetKeyValue("Time", "Until")), iniDateUntil)
+                    DateTime.TryParse(encryptionW.DecryptData(iniFile.GetKeyValue("Time", "Until")), culture, DateTimeStyles.None, iniDateUntil)
                 Catch ex As Exception
                     MsgBox("Error reading my configuration file. Please re-install me.")
                     End
@@ -1518,7 +1520,7 @@ Public Class ColdTurkey
 
     Private Sub startService()
 
-        Dim dateToBlockToString As String = DateTimePicker1.Value.Month & "/" & DateTimePicker1.Value.Day & "/" & DateTimePicker1.Value.Year & " " & hour24I & ":" & minute.Text & ":00"
+        Dim dateToBlockToString As String = DateTimePicker1.Value.Day & "/" & DateTimePicker1.Value.Month & "/" & DateTimePicker1.Value.Year & " " & hour24I & ":" & minute.Text & ":00"
 
         Try
             Dim iniFile As New IniFile
@@ -1551,7 +1553,7 @@ Public Class ColdTurkey
             Catch ex As Exception
                 MsgBox("There was an error writing the ct_notify.exe startup entry")
             End Try
-            
+
             Try
                 Threading.Thread.Sleep(500) 'To offset the periodical reading times of ct_settings.ini between KCTRP and ct_notify
                 Process.Start(Application.StartupPath + "\ct_notify.exe")
@@ -1918,6 +1920,7 @@ Public Class ColdTurkey
     Private Sub calculateTimeDiff()
 
         Dim secondsout As Long
+        Dim culture As CultureInfo = New CultureInfo("en-CA")
 
         If chk_24.Checked = False Then
             If StrComp(amPmSelector.Text, "PM", vbTextCompare) = 0 And Val(hour.Text) >= 1 And Val(hour.Text) <= 11 Then
@@ -1934,8 +1937,8 @@ Public Class ColdTurkey
 
         Dim didItWork As Boolean
         Dim dateToBlockTo As DateTime
-        Dim dateToBlockToString As String = DateTimePicker1.Value.Month & "/" & DateTimePicker1.Value.Day & "/" & DateTimePicker1.Value.Year & " " & hour24I & ":" & minute.Text & ":00"
-        didItWork = DateTime.TryParse(dateToBlockToString, dateToBlockTo)
+        Dim dateToBlockToString As String = DateTimePicker1.Value.Day & "/" & DateTimePicker1.Value.Month & "/" & DateTimePicker1.Value.Year & " " & hour24I & ":" & minute.Text & ":00"
+        didItWork = DateTime.TryParse(dateToBlockToString, culture, DateTimeStyles.None, dateToBlockTo)
         If didItWork = True Then
             secondsout = DateDiff(DateInterval.Second, DateTime.Now, dateToBlockTo)
 
@@ -2025,6 +2028,18 @@ Public Class ColdTurkey
         ElseIf indexOfItem = 0 And list_prog.Items.Count > 0 Then
             list_prog.SetSelected(0, True)
         End If
+    End Sub
+
+    Public Sub New()
+
+
+        Threading.Thread.CurrentThread.CurrentCulture = New CultureInfo("en-CA")
+        Threading.Thread.CurrentThread.CurrentUICulture = New CultureInfo("en-CA")
+        ' This call is required by the designer.
+        InitializeComponent()
+
+        ' Add any initialization after the InitializeComponent() call.
+
     End Sub
 End Class
 

@@ -313,10 +313,10 @@ Partial Class ColdTurkey
         Me.pan_apps.TabIndex = 21
         Me.pan_apps.Visible = False
         '
-        'Button3
+        'removeProg
         '
         Me.removeProg.Location = New System.Drawing.Point(278, 33)
-        Me.removeProg.Name = "Button3"
+        Me.removeProg.Name = "removeProg"
         Me.removeProg.Size = New System.Drawing.Size(80, 22)
         Me.removeProg.TabIndex = 2
         Me.removeProg.Text = "- Remove"
@@ -433,7 +433,6 @@ Partial Class ColdTurkey
         'DateTimePicker1
         '
         Me.DateTimePicker1.CustomFormat = "dd/MM/yyyy"
-        Me.DateTimePicker1.Format = System.Windows.Forms.DateTimePickerFormat.Custom
         Me.DateTimePicker1.Location = New System.Drawing.Point(156, 365)
         Me.DateTimePicker1.MaxDate = New Date(2099, 12, 31, 0, 0, 0, 0)
         Me.DateTimePicker1.MinDate = New Date(2000, 1, 1, 0, 0, 0, 0)

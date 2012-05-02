@@ -27,6 +27,8 @@ Imports System.Net
 Imports System.Runtime.InteropServices
 Imports kctrp.IniFile
 Imports System.Text
+Imports System.Threading
+Imports System.Globalization
 
 Public Class Service1
     Inherits System.ServiceProcess.ServiceBase
@@ -49,6 +51,9 @@ Public Class Service1
     Public Sub New()
         MyBase.New()
         MyBase.CanHandleSessionChangeEvent = True
+
+        Thread.CurrentThread.CurrentCulture = New CultureInfo("en-CA")
+        Thread.CurrentThread.CurrentUICulture = New CultureInfo("en-CA")
         ' This call is required by the Component Designer.
         InitializeComponent()
         ' Add any initialization after the InitializeComponent() call
@@ -126,6 +131,7 @@ Public Class Service1
 
         Dim timeLeft As Long
         Dim timeLeftDate As DateTime
+        Dim culture As CultureInfo = New CultureInfo("en-CA")
         ctMutex = New Threading.Mutex(False, "KeepmealivepleaseKCTRP")
         adder.Path = sWinDir & "\system32\drivers\etc"
 
@@ -135,7 +141,7 @@ Public Class Service1
             If iniFile.Sections.Count < 2 Then
                 stopMe()
             Else
-                DateTime.TryParse(encryptionW.DecryptData(iniFile.GetKeyValue("Time", "Until")), timeLeftDate)
+                DateTime.TryParse(encryptionW.DecryptData(iniFile.GetKeyValue("Time", "Until")), culture, DateTimeStyles.None, timeLeftDate)
                 timeLeft = DateDiff(DateInterval.Second, DateTime.Now, timeLeftDate)
                 If timeLeft <= 0 Then
                     End
@@ -184,11 +190,12 @@ Public Class Service1
         Dim iniProcessList As String = ""
         Dim timeLeft As Long
         Dim timeLeftDate As DateTime
+        Dim culture As CultureInfo = New CultureInfo("en-CA")
 
         Try
             Dim iniFile = New IniFile
             iniFile.Load(Application.StartupPath + "\ct_settings.ini")
-            DateTime.TryParse(encryptionW.DecryptData(iniFile.GetKeyValue("Time", "Until")), timeLeftDate)
+            DateTime.TryParse(encryptionW.DecryptData(iniFile.GetKeyValue("Time", "Until")), culture, DateTimeStyles.None, timeLeftDate)
             iniTimeChanging = iniFile.GetKeyValue("Time", "TimeChanging")
             iniProcessList = iniFile.GetKeyValue("Process", "List")
             If StrComp("null", iniProcessList) <> 0 Then

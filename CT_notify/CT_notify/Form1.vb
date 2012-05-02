@@ -22,6 +22,7 @@ Imports System.Security.Cryptography
 Imports System.Diagnostics
 Imports System.IO
 Imports ct_notify.IniFile
+Imports System.Globalization
 
 Public Class Form1
 
@@ -164,6 +165,15 @@ Public Class Form1
         Application.Restart()
     End Sub
 
+    Public Sub New()
+        Threading.Thread.CurrentThread.CurrentCulture = New CultureInfo("en-CA")
+        Threading.Thread.CurrentThread.CurrentUICulture = New CultureInfo("en-CA")
+        ' This call is required by the designer.
+        InitializeComponent()
+
+        ' Add any initialization after the InitializeComponent() call.
+
+    End Sub
 End Class
 
 Public NotInheritable Class Simple3Des
