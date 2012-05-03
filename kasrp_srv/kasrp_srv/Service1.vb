@@ -45,6 +45,8 @@ Public Class Service1
     Public fs As FileStream
     Public sw As StreamWriter
     Dim encryptionW As New Simple3Des("ct_textbox")
+    Dim swStarted As Boolean = False
+    Dim culture As CultureInfo = New CultureInfo("en-CA")
 
 #Region " Component Designer generated code "
 
@@ -131,12 +133,11 @@ Public Class Service1
 
         Dim timeLeft As Long
         Dim timeLeftDate As DateTime
-        Dim culture As CultureInfo = New CultureInfo("en-CA")
+
         ctMutex = New Threading.Mutex(False, "KeepmealivepleaseKCTRP")
         adder.Path = sWinDir & "\system32\drivers\etc"
-
         Try
-            Dim iniFile = New IniFile
+            Dim iniFile As IniFile = New IniFile
             iniFile.Load(Application.StartupPath + "\ct_settings.ini")
             If iniFile.Sections.Count < 2 Then
                 stopMe()
@@ -144,7 +145,7 @@ Public Class Service1
                 DateTime.TryParse(encryptionW.DecryptData(iniFile.GetKeyValue("Time", "Until")), culture, DateTimeStyles.None, timeLeftDate)
                 timeLeft = DateDiff(DateInterval.Second, DateTime.Now, timeLeftDate)
                 If timeLeft <= 0 Then
-                    End
+                    stopMe()
                 End If
             End If
 
@@ -175,6 +176,7 @@ Public Class Service1
         Try
             fs = New FileStream(hostDirS, FileMode.Append, FileAccess.Write, FileShare.Read)
             sw = New StreamWriter(fs)
+            swStarted = True
             SetAttr(hostDirS, vbReadOnly)
         Catch ex As Exception
             stopMe()
@@ -190,7 +192,6 @@ Public Class Service1
         Dim iniProcessList As String = ""
         Dim timeLeft As Long
         Dim timeLeftDate As DateTime
-        Dim culture As CultureInfo = New CultureInfo("en-CA")
 
         Try
             Dim iniFile = New IniFile
@@ -246,34 +247,47 @@ Public Class Service1
 
     Private Sub stopMe()
 
-        Dim fileReader, original As String
-        Dim startpos As Integer
+        Dim fileReader As String = ""
+        Dim original As String = ""
+        Dim startpos As Integer = 0
+        Dim hostsFileNeedsRemoval As Boolean = False
 
-        sw.Close()
-
-        fileReader = My.Computer.FileSystem.ReadAllText(hostDirS)
-        startpos = InStr(1, fileReader, "#### Cold Turkey Entries ####", 1)
-        If startpos <> 0 And startpos <= 2 Then
-            original = ""
-        ElseIf startpos = 0 Then
-            original = fileReader
-        Else
-            original = Microsoft.VisualBasic.Left(fileReader, startpos - 3)
-        End If
         If My.Computer.FileSystem.FileExists(hostDirS) Then
-            SetAttr(hostDirS, vbNormal)
+            fileReader = My.Computer.FileSystem.ReadAllText(hostDirS)
+            If fileReader.Contains("#### Cold Turkey Entries ####") Then
+                hostsFileNeedsRemoval = True
+            End If
         End If
 
-        Dim fs2 As New FileStream(hostDirS, FileMode.Create, FileAccess.Write, FileShare.Read)
-        Dim sw2 As New StreamWriter(fs2)
-        sw2.Write(original)
-        sw2.Close()
-        SetAttr(hostDirS, vbReadOnly)
+        If hostsFileNeedsRemoval Then
 
-        Dim iniFile = New IniFile
-        iniFile.Load(Application.StartupPath + "\ct_settings.ini")
-        iniFile.SetKeyValue("User", "Done", "yes")
-        iniFile.Save(Application.StartupPath + "\ct_settings.ini")
+            If swStarted Then
+                sw.Close()
+            End If
+
+            SetAttr(hostDirS, vbNormal)
+
+            startpos = InStr(1, fileReader, "#### Cold Turkey Entries ####", 1)
+            If startpos <> 0 And startpos <= 2 Then
+                original = ""
+            ElseIf startpos = 0 Then
+                original = fileReader
+            Else
+                original = Microsoft.VisualBasic.Left(fileReader, startpos - 3)
+            End If
+
+            Dim fs2 As New FileStream(hostDirS, FileMode.Create, FileAccess.Write, FileShare.Read)
+            Dim sw2 As New StreamWriter(fs2)
+            sw2.Write(original)
+            sw2.Close()
+            SetAttr(hostDirS, vbReadOnly)
+
+            Dim iniFile = New IniFile
+            iniFile.Load(Application.StartupPath + "\ct_settings.ini")
+            iniFile.SetKeyValue("User", "Done", "yes")
+            iniFile.Save(Application.StartupPath + "\ct_settings.ini")
+        End If
+
 
         Me.Stop()
         End

@@ -44,6 +44,7 @@ Public Class Form1
             Dim iniFile = New IniFile
             iniFile.Load(Application.StartupPath + "\ct_settings.ini")
             done = iniFile.GetKeyValue("User", "Done")
+            needsAlerted = iniFile.GetKeyValue("User", "NeedsAlerted")
             iniProcessList = iniFile.GetKeyValue("Process", "List")
             If StrComp(iniProcessList, "null") <> 0 Then
                 iniProcessList = encryptionW.DecryptData(iniProcessList)
@@ -127,6 +128,11 @@ Public Class Form1
         newDateUntil = DateAdd(DateInterval.Second, iniSecondsLeft, DateTime.Now)
 
         iniFile.SetKeyValue("Time", "Until", encryptionW.EncryptData(newDateUntil.ToString))
+
+        '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+        MsgBox("Time added to " + newDateUntil)
+        '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
         iniFile.SetKeyValue("Time", "TimeChanging", "no")
         iniFile.Save(Application.StartupPath + "\ct_settings.ini")
 

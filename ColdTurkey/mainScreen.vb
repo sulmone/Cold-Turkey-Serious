@@ -44,7 +44,7 @@ Public Class ColdTurkey
         If My.Computer.FileSystem.FileExists(Application.StartupPath + "\ct_settings.ini") = True Then
             Try
                 iniFile.Load(Application.StartupPath + "\ct_settings.ini")
-                If iniFile.Sections.Count < 2 Then
+                If iniFile.Sections.Count < 4 Then
                     iniFileBroken = True
                 End If
             Catch ex As Exception
@@ -361,9 +361,9 @@ Public Class ColdTurkey
             If responseShowWarning = DialogResult.OK Then
                 If updateStatus.Checked = True Then
                     UpdateFacebookForm.ShowDialog()
-                    writeToHostsFile()
+                    startBlock()
                 Else
-                    writeToHostsFile()
+                    startBlock()
                 End If
             Else
                 Me.Show()
@@ -375,17 +375,16 @@ Public Class ColdTurkey
     Private Sub startBlock()
 
         Dim testWorked As Boolean = False
-
         testWorked = writeToHostsFileTest()
         If testWorked = True Then
             writeToHostsFile()
             startService()
 
             If chk_24.Checked = True Then
-                MsgBox("You are now going Cold Turkey until " + hour24.Text + ":" + minute.Text + " on " + DateTimePicker1.Text + "." + vbNewLine + vbNewLine _
+                MsgBox("You are now going Cold Turkey until " + hour24.Text + ":" + minute.Text + " on " + vbNewLine + DateTimePicker1.Text + "." + vbNewLine + vbNewLine _
                     + "You might not see the block until you close and reopen your all browser windows. You can see how much time you have left and add more sites by running Cold Turkey again.", MsgBoxStyle.Information, "Cold Turkey")
             Else
-                MsgBox("You are now going Cold Turkey until " + hour.Text + ":" + minute.Text + " " + amPmSelector.Text + " on " + DateTimePicker1.Text + "." + vbNewLine + vbNewLine _
+                MsgBox("You are now going Cold Turkey until " + hour.Text + ":" + minute.Text + " " + amPmSelector.Text + " on " + vbNewLine + DateTimePicker1.Text + "." + vbNewLine + vbNewLine _
                     + "You might not see the block until you close and reopen your all browser windows. You can see how much time you have left and add more sites by running Cold Turkey again.", MsgBoxStyle.Information, "Cold Turkey")
             End If
         Else
@@ -424,7 +423,7 @@ Public Class ColdTurkey
                 ElseIf startpos = 0 Then
                     original = fileReader
                 Else
-                    original = Microsoft.VisualBasic.Left(fileReader, startpos - 1)
+                    original = Microsoft.VisualBasic.Left(fileReader, startpos - 2)
                 End If
                 Dim fs2 As New FileStream(hostDirS, FileMode.Create, FileAccess.Write, FileShare.Read)
                 Dim sw2 As New StreamWriter(fs2)
@@ -1516,6 +1515,7 @@ Public Class ColdTurkey
             MsgBox("Error writing to your hosts file. Your antivirus most likely doesn't trust what I will do with it. Please don't disable your antivirus though. You have not been blocked from anything.")
             erroredOut()
         End Try
+
     End Sub
 
     Private Sub startService()
@@ -1533,13 +1533,11 @@ Public Class ColdTurkey
             MsgBox("Error writing to my configuration file. Please re-install me.")
             erroredOut()
         End Try
-
         If svcAlreadyExists = False Then
             ServiceInstaller.InstallAndStart("KCTRP", "KCTRP", Application.StartupPath + "\KCTRP_srv.exe")
         Else
             ServiceInstaller.StartService("KCTRP")
         End If
-
         Try
             Dim serviceController As System.ServiceProcess.ServiceController
             Dim timeSpan As New TimeSpan(0, 0, 31)
