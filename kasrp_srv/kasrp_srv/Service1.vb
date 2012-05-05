@@ -252,7 +252,12 @@ Public Class Service1
         Dim startpos As Integer = 0
         Dim hostsFileNeedsRemoval As Boolean = False
 
+        If swStarted Then
+            sw.Close()
+        End If
+
         If My.Computer.FileSystem.FileExists(hostDirS) Then
+            SetAttr(hostDirS, vbNormal)
             fileReader = My.Computer.FileSystem.ReadAllText(hostDirS)
             If fileReader.Contains("#### Cold Turkey Entries ####") Then
                 hostsFileNeedsRemoval = True
@@ -260,13 +265,6 @@ Public Class Service1
         End If
 
         If hostsFileNeedsRemoval Then
-
-            If swStarted Then
-                sw.Close()
-            End If
-
-            SetAttr(hostDirS, vbNormal)
-
             startpos = InStr(1, fileReader, "#### Cold Turkey Entries ####", 1)
             If startpos <> 0 And startpos <= 2 Then
                 original = ""
@@ -286,6 +284,8 @@ Public Class Service1
             iniFile.Load(Application.StartupPath + "\ct_settings.ini")
             iniFile.SetKeyValue("User", "Done", "yes")
             iniFile.Save(Application.StartupPath + "\ct_settings.ini")
+        Else
+            SetAttr(hostDirS, vbReadOnly)
         End If
 
 
